@@ -1,0 +1,43 @@
+#container {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+    height: 100vh;
+  }
+
+#main-container {
+    display: flex;
+    /* justify-content: center; */
+    flex-direction: column;
+    align-items: left;
+    width: 40%;
+    height: 70%;
+    border: 1px solid #888888;
+    overflow: scroll;
+}
+
+#settings-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+#settings-list > li {
+    border-bottom: 1px solid #afafaf;
+}
+
+#sub-container {
+    display: flex;
+    /* justify-content: center; */
+    flex-direction: column;
+    align-items: left;
+    width: 10%;
+    height: 70%;
+    align-items: left;
+}
+
+#layer-names {
+    list-style-type: none;
+    white-space: nowrap;
+}
+
