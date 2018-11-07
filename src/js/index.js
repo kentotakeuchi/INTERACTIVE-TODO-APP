@@ -2,31 +2,30 @@ import $ from 'jquery';
 import * as soundsView from './views/soundsView';
 import { elements } from './views/base';
 
-
 const state = {};
-
 
 $('document').ready(() => {
     // Set event handlers.
     setEventHandlers();
-    console.log('ready');
 });
 
 function setEventHandlers() {
-    console.log('set');
+    elements.sounds.click(soundsControl);
+}
 
-    elements.sounds.click(soundsView.renderSoundsPage);
+const soundsControl = () => {
+    console.log('click');
+
+    // Prepare UI for sounds page.
+    soundsView.clearPrevPage();
+
+    // Render sounds page.
+    soundsView.renderSoundsPage();
 }
 
 
 
 
-
-// test
-import {str} from './test';
-const x = 99;
-
-console.log(`${str}. valuable x is ${x}`);
 
 
 

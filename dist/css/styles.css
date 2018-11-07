@@ -17,12 +17,12 @@
     overflow: scroll;
 }
 
-#settings-list {
+#settings-list, #sounds-list {
     list-style-type: none;
     padding: 0;
 }
 
-#settings-list > li {
+#settings-list > li, #sounds-list > li {
     border-bottom: 1px solid #afafaf;
 }
 
@@ -40,4 +40,13 @@
     list-style-type: none;
     white-space: nowrap;
 }
+
+/********************
+* Sounds page
+*********************/
+
+#sounds-list > li {
+    border-bottom: 1px solid #afafaf;
+}
+
 
