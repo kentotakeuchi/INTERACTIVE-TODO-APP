@@ -1,3 +1,7 @@
+/********************
+* General
+*********************/
+
 #container {
     display: flex;
     justify-content: center;
@@ -17,14 +21,20 @@
     overflow: scroll;
 }
 
-#settings-list, #sounds-list {
+#settings-list, #sounds-list, #themes-list,
+#tips-list, #preferences-list {
     list-style-type: none;
     padding: 0;
 }
 
-#settings-list > li, #sounds-list > li {
+#settings-list > li, #sounds-list > li, #themes-list > li,
+#tips-list > li, #preferences-list > li {
     border-bottom: 1px solid #afafaf;
 }
+
+/********************
+* Sub container
+*********************/
 
 #sub-container {
     display: flex;
@@ -41,12 +51,13 @@
     white-space: nowrap;
 }
 
+#layer-name-settings {
+    font-weight: bold;
+}
+
 /********************
 * Sounds page
 *********************/
 
-#sounds-list > li {
-    border-bottom: 1px solid #afafaf;
-}
 
 
