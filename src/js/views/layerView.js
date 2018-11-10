@@ -11,4 +11,4 @@ export const renderSettingsPage = () => {
         </ul>
     `;
     elements.mainContainer.append(markup);
-}
+};

@@ -13,5 +13,10 @@ export const elements = {
     layerNameLists: $('#layer-name-lists'),
     layerNameListName: $('#layer-name-listName'),
 
-    listsInput: $('.listsInput')
+    listsInput: $('.listsInput'),
+    memoInput: $('.memoInput')
+};
+
+export const clearPrevPage = () => {
+    $('#main-container').children().remove();
 };

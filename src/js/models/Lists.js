@@ -1,4 +1,5 @@
 import uniqid from 'uniqid';
+import $ from 'jquery';
 import { elements } from '../views/base';
 
 
@@ -7,16 +8,19 @@ export default class Lists {
         this.memos = [];
     }
 
-    addMemo() {
+    addMemo(input) {
+        console.log('addMemo');
+
         const memo = {
             id: uniqid(),
-            content: elements.listsInput
+            input
         }
         this.memos.push(memo);
+        localStorage.setItem('memos', JSON.stringify(this.memos));
         return memo;
     }
 
-    deleteMemmo(id) {
+    deleteMemo(id) {
         const index = this.memos.findIndex(el => el.id === id);
         this.memos.splice(index, 1);
     }
