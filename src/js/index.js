@@ -1,17 +1,16 @@
 import $ from 'jquery';
 import Lists from './models/Lists';
 import * as settingsView from './views/settingsView';
-import * as layerView from './views/layerView';
 import * as listsView from './views/listsView';
 import { elements, clearPrevPage } from './views/base';
 
 const state = {};
-const lsMemos = localStorage.getItem('memos');
+const MemosOfLocalStorage = JSON.parse(localStorage.getItem('memos'));
+let updatedLocalStorage;
 
 $('document').ready(() => {
     // Set event handlers.
     setEventHandlers();
-    console.log('lsMemo', lsMemos);
 });
 
 function setEventHandlers() {
@@ -49,6 +48,13 @@ const settingsControl = (e) => {
     if (e.target.textContent === 'My Lists') {
         // Render "ul" element.
         listsView.renderMyListsPage();
+
+        // Render memos from local storage.
+        if (MemosOfLocalStorage) {
+            MemosOfLocalStorage.forEach(el => {
+                listsView.renderList(el);
+            });
+        }
 
         // Styling layer name to bold & initial.
         elements.layerNameLists.css('font-weight', 'bold');
@@ -89,17 +95,15 @@ const layerControl = (e) => {
         elements.layerNameLists.css('font-weight', 'initial');
 
     } else if (e.target.textContent === 'Lists') {
-        // Create new lists IF there in none yet
-        if (!state.lists) state.lists = new Lists();
-
         // Render "ul" element.
-        listsView.renderMyListsPage(lsMemos);
+        listsView.renderMyListsPage();
 
-        // Render memos array.
-        state.lists.memos.forEach(el => {
-            console.log('el', el);
-            listsView.renderList(el);
-        })
+        // Render memos from local storage.
+        if (MemosOfLocalStorage) {
+            MemosOfLocalStorage.forEach(el => {
+                listsView.renderList(el);
+            });
+        }
 
         // Styling layer name to bold & initial.
         elements.layerNameLists.css('font-weight', 'bold');
@@ -136,6 +140,16 @@ const listsControl = (e) => {
 
         // Render memo on the UI.
         listsView.renderList(memo);
+
+        // TODO
+        // Add new input value to local storage.
+        updatedLocalStorage = MemosOfLocalStorage ? JSON.parse(localStorage.getItem('memos')) : [];
+
+        updatedLocalStorage.push(memo);
+        // if(MemosOfLocalStorage === null) {
+
+        // }
+        // MemosOfLocalStorage.push(memo);
 
         // Remove input field from UI.
         $(e.target).remove();

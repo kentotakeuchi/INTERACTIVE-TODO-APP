@@ -2,25 +2,13 @@ import $ from 'jquery';
 import { elements } from './base';
 
 
-export const renderMyListsPage = (memos) => {
-    console.log('memos', memos);
-    if (memos) {
-        const markup = `
-            <ul id="lists-list">
-                <li>
-                    
-                </li>
-            </ul>
-        `;
-        elements.mainContainer.append(markup);
-    } else {
-        const markup = `
-            <ul id="lists-list">
-                <input class="memoInput" type="text">
-            </ul>
-        `;
-        elements.mainContainer.append(markup);
-    }
+export const renderMyListsPage = () => {
+    const markup = `
+        <ul id="lists-list">
+
+        </ul>
+    `;
+    elements.mainContainer.append(markup);
 };
 
 export const renderNewInput = (e) => {
@@ -37,7 +25,7 @@ export const renderNewInput = (e) => {
 };
 
 export const renderList = memo => {
-    console.log('render');
+    console.log('memo', memo);
 
     const markup = `
         <li id="${memo.id}">${memo.input}</li>

@@ -13,7 +13,7 @@ export const elements = {
     layerNameLists: $('#layer-name-lists'),
     layerNameListName: $('#layer-name-listName'),
 
-    listsInput: $('.listsInput'),
+    listsList: $('#lists-list'),
     memoInput: $('.memoInput')
 };
 
