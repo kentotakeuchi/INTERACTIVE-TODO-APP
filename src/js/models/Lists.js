@@ -14,8 +14,6 @@ export default class Lists {
     }
 
     addMemo(input) {
-        console.log('addMemo');
-
         const memo = {
             id: uniqid(),
             input
@@ -28,6 +26,9 @@ export default class Lists {
     deleteMemo(id) {
         const index = this.memos.findIndex(el => el.id === id);
         this.memos.splice(index, 1);
+
+        // Delete clicked memo from local storage.
+        localStorage.setItem('memos', JSON.stringify(this.memos));
     }
 
     updateContent(id, newContent) {
