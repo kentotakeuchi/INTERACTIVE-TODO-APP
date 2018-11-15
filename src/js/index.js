@@ -1,9 +1,10 @@
 import $ from 'jquery';
 import * as Hammer from 'hammerjs';
-import * as jHammer from 'jquery-hammerjs';
 import Lists from './models/Lists';
+import List from './models/List';
 import * as settingsView from './views/settingsView';
 import * as listsView from './views/listsView';
+import * as listView from './views/listView';
 import { elements, clearPrevPage } from './views/base';
 
 const state = {};
@@ -184,72 +185,150 @@ function removeMemoHandler(e) {
 }
 
 function editMemoHandler(e) {
-    console.log('e.target', e.target);
-
     e.preventDefault();
 
-    if (e.type === 'doubletap') {
-        console.log('editMemoHandler', e.type);
-        const target = e.target;
+    // Check whether "input" field has already existed or not.
+    if (!$('#lists-list').has('input').length > 0) {
+        if (e.type === 'doubletap') {
+            console.log('editMemoHandler', e.type);
+            const target = e.target;
 
-        // Create new lists IF there in none yet
-        if (!state.lists) state.lists = new Lists();
+            // Create new lists IF there in none yet
+            if (!state.lists) state.lists = new Lists();
 
-        // Get id of double clicked memo.
-        const id = e.target.id;
+            // Get id of double clicked memo.
+            const id = e.target.id;
 
-        // Hide tapped memo list & show input fields with prev value.
-        $(`#${id}`).hide();
-        listsView.renderNewInputForEdit(target);
+            // Hide tapped memo list.
+            $(`#${id}`).hide();
+
+            // show input fields with prev value.
+            listsView.renderNewInputForEdit(target);
+
+            // Turn off the event to avoid event conflict.
+            $('#lists-list').off('keypress', '.memoInput', listsControl);
+            // Set the event of press enter key.
+            $('#lists-list').on('keypress', '.memoInput', updateMemo);
+        }
     }
 }
 
+// Update memo when user presses enter key.
+function updateMemo(e) {
+    console.log('e.target', e.target);
+
+    if (e.keyCode === 13) {
+        console.log('updateMemo');
+        const id = e.target.previousElementSibling.id;
+        console.log('id', id);
+
+        // Get updated input value.
+        const newInput = e.target.value;
+        console.log('newInput', newInput);
+
+        // user press enter -> update data
+        state.lists.updateContent(id, newInput);
+
+        // Prepare for rendering updated memos.
+        clearPrevPage();
+
+        // show update list on UI
+        const MemosOfLocalStorage = JSON.parse(localStorage.getItem('memos'));
+        // Render "ul" element.
+        listsView.renderMyListsPage();
+
+        // Render memos from local storage.
+        if (MemosOfLocalStorage) {
+            MemosOfLocalStorage.forEach(el => {
+                listsView.renderList(el);
+            });
+        }
+
+        // Set HAMMER.JS event.
+        setHammerJs();
+    }
+}
+
+// NEXT TASK!!!
 function changeToEachListHandler(e) {
     e.preventDefault();
 
     if (e.type === 'singletap') {
         console.log('changeToEachListHandler', e.type);
+        // Prepare for rendering updated memos.
+        clearPrevPage();
+
+        const target = e.target;
+
+        // Render "ul" element.
+        listView.renderEachListPage(target);
+
+        // Render memos from local storage.
+        const MemosOfLocalStorage = JSON.parse(localStorage.getItem('memos'));
+        console.log('MemosOfLocalStorage', MemosOfLocalStorage);
+
+        if (MemosOfLocalStorage) {
+            MemosOfLocalStorage.forEach(el => {
+                listView.renderList(el);
+            });
+        }
+
+        // Set HAMMER.JS event.
+        setHammerJs();
+
+        // Styling layer name to bold & initial.
+        elements.layerNameListName.css('font-weight', 'bold');
+        elements.layerNameLists.css('font-weight', 'initial');
+        elements.layerNameSettings.css('font-weight', 'initial');
+
+        // Set event for showing input field.
+        elements.mainContainer.off('click', listView.renderNewInput);
+        elements.mainContainer.on('click', listView.renderNewInput);
     }
 }
 
+// TODO: Seperate this function from index.js.
+// Hammer.js event handler.
 function setHammerJs() {
     const MemosOfLocalStorage = JSON.parse(localStorage.getItem('memos'));
 
     let memos = [];
-    MemosOfLocalStorage.forEach(el => {
-        let els = document.getElementById(`${el.id}`);
-        memos.push(els);
-    });
+    if (MemosOfLocalStorage) {
+        MemosOfLocalStorage.forEach(el => {
+            let els = document.getElementById(`${el.id}`);
+            memos.push(els);
+        });
 
-    // create a manager for that element
-    let mc = [];
-    memos.forEach(el => {
-        let hm = new Hammer.Manager(el);
-        mc.push(hm);
-    });
+        // create a manager for that element
+        let mc = [];
+        memos.forEach(el => {
+            let hm = new Hammer.Manager(el);
+            mc.push(hm);
+        });
 
-    // create a recognizer
-    const quadrupleTap = new Hammer.Tap({ event: 'quadrupletap', taps: 4 });
-    const dblTap = new Hammer.Tap({ event: 'doubletap', taps: 2 });
-    const singleTap = new Hammer.Tap({ event: 'singletap' });
+        // create a recognizer
+        const quadrupleTap = new Hammer.Tap({ event: 'quadrupletap', taps: 4 });
+        const dblTap = new Hammer.Tap({ event: 'doubletap', taps: 2 });
+        const singleTap = new Hammer.Tap({ event: 'singletap' });
 
-    // add the recognizer
-    mc.forEach(el => {
-        el.add(quadrupleTap);
-        el.add(dblTap);
-        el.add(singleTap);
-        // we want to recognize this simulatenous, so a quadrupletap will be detected even while a tap has been recognized.
-        el.get('quadrupletap').recognizeWith(['doubletap', 'singletap']);
-        el.get('doubletap').recognizeWith('singletap');
-        // we only want to trigger a tap, when we don't have detected a doubletap
-        el.get('doubletap').requireFailure('quadrupletap');
-        el.get('singletap').requireFailure(['doubletap', 'quadrupletap']);
+        // add the recognizer
+        mc.forEach(el => {
+            el.add(quadrupleTap);
+            el.add(dblTap);
+            el.add(singleTap);
+            // we want to recognize this simulatenous, so a quadrupletap will be detected even while a tap has been recognized.
+            el.get('quadrupletap').recognizeWith(['doubletap', 'singletap']);
+            el.get('doubletap').recognizeWith('singletap');
+            // we only want to trigger a tap, when we don't have detected a doubletap
+            el.get('doubletap').requireFailure('quadrupletap');
+            el.get('singletap').requireFailure(['doubletap', 'quadrupletap']);
 
-        // subscribe to events
-        el.on('quadrupletap', removeMemoHandler);
-        el.on('doubletap', editMemoHandler);
-        el.on('singletap', changeToEachListHandler);
-    });
+            // subscribe to events
+            el.on('quadrupletap', removeMemoHandler);
+            el.on('doubletap', editMemoHandler);
+            el.on('singletap', changeToEachListHandler);
+        });
+    }
 }
 
 

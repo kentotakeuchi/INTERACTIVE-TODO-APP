@@ -28,11 +28,12 @@ export const renderNewInput = (e) => {
 };
 
 export const renderNewInputForEdit = (target) => {
-    console.log(target);
+    // MEMO: target.id -> insertAfter(markup) probably.
+    const id = target.id;
     const markup = `
         <input class="memoInput" type="text" value="${target.innerText}">
     `;
-    $('#lists-list').append(markup);
+    $(`#${id}`).after(markup);
 
     // Focus input field automatically when input shows.
     $('.memoInput').focus();
@@ -43,8 +44,6 @@ export const renderNewInputForEdit = (target) => {
 };
 
 export const renderList = memo => {
-    console.log('memo in renderList', memo);
-
     const markup = `
         <li id="${memo.id}" class="memo">${memo.input}</li>
     `;
@@ -62,14 +61,11 @@ export const removeNewInput = (e) => {
 };
 
 export const removeNewInputForEdit = (e) => {
-    console.log(e.target);
-
     if (e.target === $('#main-container')[0]) {
-        $('.memoInput:last-child').remove();
+        $('#main-container').find('input').remove();
 
         // Detect element which display is none & show it again.
         $('#main-container').find('li').each((index, el) => {
-            console.log('el', el);
             if (el.style.display === 'none') {
                 el.style.display = 'block';
             }
@@ -77,6 +73,7 @@ export const removeNewInputForEdit = (e) => {
 
         // Turn off remove input & on render input.
         $('#main-container').off('click', removeNewInputForEdit);
+        $('#main-container').off('click', renderNewInput);
         $('#main-container').on('click', renderNewInput);
     }
 };

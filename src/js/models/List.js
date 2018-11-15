@@ -3,7 +3,7 @@ import $ from 'jquery';
 import { elements } from '../views/base';
 
 
-export default class Lists {
+export default class List {
     constructor() {
         this.memos = [];
         if (localStorage.getItem('memos')) {
