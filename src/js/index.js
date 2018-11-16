@@ -5,7 +5,7 @@ import List from './models/List';
 import * as settingsView from './views/settingsView';
 import * as listsView from './views/listsView';
 import * as listView from './views/listView';
-import { elements, clearPrevPage } from './views/base';
+import { elements, clearPrevPage, tutorialModal, layerNameHandler } from './views/base';
 
 const state = {};
 
@@ -22,6 +22,8 @@ function setEventHandlers() {
     elements.layerNameLists.on('click', layerControl);
     elements.layerNameListName.off('click', layerControl);
     elements.layerNameListName.on('click', layerControl);
+    elements.tutorial.off('click', tutorialControl);
+    elements.tutorial.on('click', tutorialControl);
 
     // Settings page.
     $('.my-lists').off('click', settingsControl);
@@ -62,8 +64,7 @@ const settingsControl = (e) => {
         setHammerJs();
 
         // Styling layer name to bold & initial.
-        elements.layerNameLists.css('font-weight', 'bold');
-        elements.layerNameSettings.css('font-weight', 'initial');
+        layerNameHandler(e);
 
         // Set event for showing input field.
         elements.mainContainer.off('click', listsView.renderNewInput);
@@ -95,9 +96,9 @@ const layerControl = (e) => {
         // Render settings page.
         settingsView.renderSettingsPage();
 
+        // TODO: Add function and put on the view.js.
         // Styling layer name to bold & initial.
-        elements.layerNameSettings.css('font-weight', 'bold');
-        elements.layerNameLists.css('font-weight', 'initial');
+        layerNameHandler(e);
 
     } else if (e.target.textContent === 'Lists') {
         // Render "ul" element.
@@ -115,15 +116,15 @@ const layerControl = (e) => {
         setHammerJs();
 
         // Styling layer name to bold & initial.
-        elements.layerNameLists.css('font-weight', 'bold');
-        elements.layerNameSettings.css('font-weight', 'initial');
+        layerNameHandler(e);
 
         // Set event for showing input field.
         elements.mainContainer.off('click', listsView.renderNewInput);
         elements.mainContainer.on('click', listsView.renderNewInput);
 
     } else if (e.target.textContent === 'List name') {
-        
+        // Styling layer name to bold & initial.
+        layerNameHandler(e);
     } else if (e.target.textContent === 'tutorial') {
         
     }
@@ -277,15 +278,38 @@ function changeToEachListHandler(e) {
         setHammerJs();
 
         // Styling layer name to bold & initial.
-        elements.layerNameListName.css('font-weight', 'bold');
-        elements.layerNameLists.css('font-weight', 'initial');
-        elements.layerNameSettings.css('font-weight', 'initial');
+        layerNameHandler(e);
 
         // Set event for showing input field.
         elements.mainContainer.off('click', listView.renderNewInput);
         elements.mainContainer.on('click', listView.renderNewInput);
     }
 }
+
+// TODO: modal doesn't show.
+function tutorialControl(e) {
+    console.log(e.target);
+    // console.log("$('.modal')", $('#exampleModal'));
+    tutorialModal();
+
+    // $('#modalOfTutorial').modal('toggle');
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // TODO: Seperate this function from index.js.
 // Hammer.js event handler.
@@ -310,25 +334,51 @@ function setHammerJs() {
         const quadrupleTap = new Hammer.Tap({ event: 'quadrupletap', taps: 4 });
         const dblTap = new Hammer.Tap({ event: 'doubletap', taps: 2 });
         const singleTap = new Hammer.Tap({ event: 'singletap' });
+        const panRight = new Hammer.Pan({
+            event: 'panright',
+            direction: Hammer.DIRECTION_RIGHT
+        });
+        const panUp = new Hammer.Pan({
+            event: 'panup',
+            direction: Hammer.DIRECTION_UP
+        });
 
         // add the recognizer
         mc.forEach(el => {
             el.add(quadrupleTap);
             el.add(dblTap);
             el.add(singleTap);
+            el.add(panRight);
+            el.add(panUp);
             // we want to recognize this simulatenous, so a quadrupletap will be detected even while a tap has been recognized.
             el.get('quadrupletap').recognizeWith(['doubletap', 'singletap']);
             el.get('doubletap').recognizeWith('singletap');
             // we only want to trigger a tap, when we don't have detected a doubletap
             el.get('doubletap').requireFailure('quadrupletap');
             el.get('singletap').requireFailure(['doubletap', 'quadrupletap']);
+            el.get('panup').requireFailure('panright');
 
             // subscribe to events
             el.on('quadrupletap', removeMemoHandler);
             el.on('doubletap', editMemoHandler);
             el.on('singletap', changeToEachListHandler);
+            el.on('panright', testPanRight);
+            el.on('panup', testPanUp);
         });
     }
+}
+
+function testPanRight(e) {
+    console.log(e.target);
+    
+    console.log(e.type);
+    
+}
+function testPanUp(e) {
+    console.log(e.target);
+
+    console.log(e.type);
+    
 }
 
 

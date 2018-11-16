@@ -2,6 +2,24 @@
 * General
 *********************/
 
+body {
+
+}
+
+li {
+    padding: 10px 10px;
+    list-style-type: none;
+}
+
+input {
+    margin: 10px 10px;
+    padding: 0 10px;
+    border-radius: 10px;
+    border-bottom: 1px solid #afafaf;
+    color: #888888;
+    width: 90%;
+}
+
 input:focus,
 select:focus,
 textarea:focus,
@@ -26,16 +44,24 @@ button:focus {
     height: 70%;
     border: 1px solid #888888;
     overflow: scroll;
+    background-image: linear-gradient(
+        to top,
+        rgb(255, 247, 0),
+        rgb(255, 0, 0));
+    border-radius: 10px;
+    color: white;
+    font-weight: 900;
+    font-size: 15px;
 }
 
 #settings-list, #sounds-list, #themes-list,
-#tips-list, #preferences-list {
+#tips-list, #preferences-list, #lists-list {
     list-style-type: none;
     padding: 0;
 }
 
 #settings-list > li, #sounds-list > li, #themes-list > li,
-#tips-list > li, #preferences-list > li {
+#tips-list > li, #preferences-list > li, #lists-list > li {
     border-bottom: 1px solid #afafaf;
 }
 
@@ -51,6 +77,7 @@ button:focus {
     width: 10%;
     height: 70%;
     align-items: left;
+    font-size: 15px;
 }
 
 #layer-names {
