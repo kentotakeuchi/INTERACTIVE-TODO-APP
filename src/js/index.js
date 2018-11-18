@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import 'bootstrap';
 import * as Hammer from 'hammerjs';
 import Lists from './models/Lists';
 import List from './models/List';
@@ -22,8 +23,8 @@ function setEventHandlers() {
     elements.layerNameLists.on('click', layerControl);
     elements.layerNameListName.off('click', layerControl);
     elements.layerNameListName.on('click', layerControl);
-    elements.tutorial.off('click', tutorialControl);
-    elements.tutorial.on('click', tutorialControl);
+    elements.tutorial.off('click', layerControl);
+    elements.tutorial.on('click', layerControl);
 
     // Settings page.
     $('.my-lists').off('click', settingsControl);
@@ -72,9 +73,29 @@ const settingsControl = (e) => {
     } else if (e.target.textContent === 'Sounds') {
         // Render sounds page.
         settingsView.renderSoundsPage();
+
+        // TODO: Should not repeat the code.
+        // Set event for changing sound.
+        $('.clear').off('click', settingsView.changeSounds);
+        $('.clear').on('click', settingsView.changeSounds);
+        $('.sci-fi').off('click', settingsView.changeSounds);
+        $('.sci-fi').on('click', settingsView.changeSounds);
+        $('.8bit').off('click', settingsView.changeSounds);
+        $('.8bit').on('click', settingsView.changeSounds);
     } else if (e.target.textContent === 'Themes') {
         // Render themes page.
         settingsView.renderThemesPage();
+
+        // TODO: Should not repeat the code.
+        // Set event for changing color.
+        $('.heat-map').off('click', settingsView.changeThemes);
+        $('.heat-map').on('click', settingsView.changeThemes);
+        $('.graphite').off('click', settingsView.changeThemes);
+        $('.graphite').on('click', settingsView.changeThemes);
+        $('.pretty-princes').off('click', settingsView.changeThemes);
+        $('.pretty-princes').on('click', settingsView.changeThemes);
+        $('.lucky-clover').off('click', settingsView.changeThemes);
+        $('.lucky-clover').on('click', settingsView.changeThemes);
     } else if (e.target.textContent === 'Tips & Tricks') {
         // Render tips&tricks page.
         settingsView.renderTipsPage();
@@ -125,8 +146,12 @@ const layerControl = (e) => {
     } else if (e.target.textContent === 'List name') {
         // Styling layer name to bold & initial.
         layerNameHandler(e);
-    } else if (e.target.textContent === 'tutorial') {
-        
+    } else if (e.target.textContent === 'Tutorial') {
+        // Show tutorial modal.
+        // $('#modalOfTutorial').modal('toggle');
+
+        // Styling layer name to bold & initial.
+        layerNameHandler(e);
     }
     // Set event again.
     setEventHandlers();
@@ -169,13 +194,14 @@ const listsControl = (e) => {
 function removeMemoHandler(e) {
     e.preventDefault();
 
-    if (e.type === 'quadrupletap') {
+    if (e.type === 'panright') {
         console.log('removeMemoHandler', e.type);
         // Create new lists IF there in none yet
         if (!state.lists) state.lists = new Lists();
 
         // Get id of clicked memo.
         const id = e.target.id;
+        console.log('id', id);
 
         // Delete clicked memo from the memos array.
         state.lists.deleteMemo(id);
@@ -189,28 +215,32 @@ function editMemoHandler(e) {
     e.preventDefault();
 
     // Check whether "input" field has already existed or not.
-    if (!$('#lists-list').has('input').length > 0) {
-        if (e.type === 'doubletap') {
-            console.log('editMemoHandler', e.type);
-            const target = e.target;
+    // And remove current input & show hidden memo.
+    if ($('#lists-list').has('input').length > 0) {
+        $('input').remove();
+        $('.memo:hidden').show();
+    }
 
-            // Create new lists IF there in none yet
-            if (!state.lists) state.lists = new Lists();
+    if (e.type === 'doubletap') {
+        console.log('editMemoHandler', e.type);
+        const target = e.target;
 
-            // Get id of double clicked memo.
-            const id = e.target.id;
+        // Create new lists IF there in none yet
+        if (!state.lists) state.lists = new Lists();
 
-            // Hide tapped memo list.
-            $(`#${id}`).hide();
+        // Get id of double clicked memo.
+        const id = e.target.id;
 
-            // show input fields with prev value.
-            listsView.renderNewInputForEdit(target);
+        // Hide tapped memo list.
+        $(`#${id}`).hide();
 
-            // Turn off the event to avoid event conflict.
-            $('#lists-list').off('keypress', '.memoInput', listsControl);
-            // Set the event of press enter key.
-            $('#lists-list').on('keypress', '.memoInput', updateMemo);
-        }
+        // show input fields with prev value.
+        listsView.renderNewInputForEdit(target);
+
+        // Turn off the event to avoid event conflict.
+        $('#lists-list').off('keypress', '.memoInput', listsControl);
+        // Set the event of press enter key.
+        $('#lists-list').on('keypress', '.memoInput', updateMemo);
     }
 }
 
@@ -254,45 +284,38 @@ function updateMemo(e) {
 function changeToEachListHandler(e) {
     e.preventDefault();
 
-    if (e.type === 'singletap') {
-        console.log('changeToEachListHandler', e.type);
-        // Prepare for rendering updated memos.
-        clearPrevPage();
+    if (!$('#lists-list').has('input').length > 0) {
+        if (e.type === 'singletap') {
+            console.log('changeToEachListHandler', e.type);
+            // Prepare for rendering updated memos.
+            clearPrevPage();
 
-        const target = e.target;
+            const target = e.target;
 
-        // Render "ul" element.
-        listView.renderEachListPage(target);
+            // Render "ul" element.
+            listView.renderEachListPage(target);
 
-        // Render memos from local storage.
-        const MemosOfLocalStorage = JSON.parse(localStorage.getItem('memos'));
-        console.log('MemosOfLocalStorage', MemosOfLocalStorage);
+            // Render memos from local storage.
+            const MemosOfLocalStorage = JSON.parse(localStorage.getItem('memos'));
+            console.log('MemosOfLocalStorage', MemosOfLocalStorage);
 
-        if (MemosOfLocalStorage) {
-            MemosOfLocalStorage.forEach(el => {
-                listView.renderList(el);
-            });
+            if (MemosOfLocalStorage) {
+                MemosOfLocalStorage.forEach(el => {
+                    listView.renderList(el);
+                });
+            }
+
+            // Set HAMMER.JS event.
+            setHammerJs();
+
+            // Styling layer name to bold & initial.
+            layerNameHandler(e);
+
+            // Set event for showing input field.
+            elements.mainContainer.off('click', listView.renderNewInput);
+            elements.mainContainer.on('click', listView.renderNewInput);
         }
-
-        // Set HAMMER.JS event.
-        setHammerJs();
-
-        // Styling layer name to bold & initial.
-        layerNameHandler(e);
-
-        // Set event for showing input field.
-        elements.mainContainer.off('click', listView.renderNewInput);
-        elements.mainContainer.on('click', listView.renderNewInput);
     }
-}
-
-// TODO: modal doesn't show.
-function tutorialControl(e) {
-    console.log(e.target);
-    // console.log("$('.modal')", $('#exampleModal'));
-    tutorialModal();
-
-    // $('#modalOfTutorial').modal('toggle');
 }
 
 
@@ -336,11 +359,13 @@ function setHammerJs() {
         const singleTap = new Hammer.Tap({ event: 'singletap' });
         const panRight = new Hammer.Pan({
             event: 'panright',
-            direction: Hammer.DIRECTION_RIGHT
+            direction: Hammer.DIRECTION_RIGHT,
+            threshold: 50
         });
         const panUp = new Hammer.Pan({
             event: 'panup',
-            direction: Hammer.DIRECTION_UP
+            direction: Hammer.DIRECTION_UP,
+            threshold: 50
         });
 
         // add the recognizer
@@ -357,12 +382,13 @@ function setHammerJs() {
             el.get('doubletap').requireFailure('quadrupletap');
             el.get('singletap').requireFailure(['doubletap', 'quadrupletap']);
             el.get('panup').requireFailure('panright');
+            el.get('panright').requireFailure('panup');
 
             // subscribe to events
-            el.on('quadrupletap', removeMemoHandler);
+            // el.on('quadrupletap', removeMemoHandler);
             el.on('doubletap', editMemoHandler);
             el.on('singletap', changeToEachListHandler);
-            el.on('panright', testPanRight);
+            el.on('panright', removeMemoHandler);
             el.on('panup', testPanUp);
         });
     }
