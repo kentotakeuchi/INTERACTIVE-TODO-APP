@@ -47,7 +47,11 @@ export const renderList = memo => {
     const markup = `
         <li id="${memo.id}" class="memo ${memo.complete}">${memo.input}</li>
     `;
-    $('#lists-list').append(markup);
+    if ($('#lists-list').has('.complete').length > 0) {
+        $('.complete').before(markup);
+    } else {
+        $('#lists-list').append(markup);
+    }
 };
 
 export const removeNewInput = (e) => {

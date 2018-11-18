@@ -71,7 +71,11 @@ button:focus {
 
 .complete {
     text-decoration: line-through;
-    background-color: #5d5d5d
+    background-color: #5d5d5d;
+    color: #888888;
+}
+.complete:hover {
+    background-color: #5d5d5d;
 }
 
 /********************
