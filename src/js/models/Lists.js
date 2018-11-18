@@ -16,7 +16,8 @@ export default class Lists {
     addMemo(input) {
         const memo = {
             id: uniqid(),
-            input
+            input,
+            complete: true
         }
         this.memos.push(memo);
         localStorage.setItem('memos', JSON.stringify(this.memos));
@@ -32,9 +33,22 @@ export default class Lists {
     }
 
     updateContent(id, newInput) {
-        console.log('id, newInput', id, newInput);
-
         this.memos.find(el => el.id === id).input = newInput;
+
+        // Update memo in local storage.
+        localStorage.setItem('memos', JSON.stringify(this.memos));
+    }
+
+    completeMemo(id) {
+        // Add class name "complete" to style completed task.
+        this.memos.find(el => el.id === id).complete = 'complete';
+
+        // Move completed task to last index of array.
+        const index = this.memos.findIndex(el => el.id === id);
+        // Cut the completed task.
+        let cut = this.memos.splice(index, 1)[0];
+        // Insert cutted task.
+        this.memos.splice(this.memos.length, 0, cut);
 
         // Update memo in local storage.
         localStorage.setItem('memos', JSON.stringify(this.memos));

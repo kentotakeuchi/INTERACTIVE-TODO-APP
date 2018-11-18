@@ -45,7 +45,7 @@ export const renderNewInputForEdit = (target) => {
 
 export const renderList = memo => {
     const markup = `
-        <li id="${memo.id}" class="memo">${memo.input}</li>
+        <li id="${memo.id}" class="memo ${memo.complete}">${memo.input}</li>
     `;
     $('#lists-list').append(markup);
 };

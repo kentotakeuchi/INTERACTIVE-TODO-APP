@@ -6,7 +6,7 @@ import List from './models/List';
 import * as settingsView from './views/settingsView';
 import * as listsView from './views/listsView';
 import * as listView from './views/listView';
-import { elements, clearPrevPage, tutorialModal, layerNameHandler } from './views/base';
+import { elements, clearPrevPage, layerNameHandler } from './views/base';
 
 const state = {};
 
@@ -147,8 +147,13 @@ const layerControl = (e) => {
         // Styling layer name to bold & initial.
         layerNameHandler(e);
     } else if (e.target.textContent === 'Tutorial') {
+        // TODO: Fix modal
         // Show tutorial modal.
-        // $('#modalOfTutorial').modal('toggle');
+        $('#modal').fadeIn('slow');
+
+        $('#close-button').click(() => {
+            $('#modal').fadeOut('slow');
+        });
 
         // Styling layer name to bold & initial.
         layerNameHandler(e);
@@ -194,7 +199,7 @@ const listsControl = (e) => {
 function removeMemoHandler(e) {
     e.preventDefault();
 
-    if (e.type === 'panright') {
+    if (e.type === 'quadrupletap') {
         console.log('removeMemoHandler', e.type);
         // Create new lists IF there in none yet
         if (!state.lists) state.lists = new Lists();
@@ -318,7 +323,28 @@ function changeToEachListHandler(e) {
     }
 }
 
+function prevPageHandler(e) {
+    console.log('prev', e.target);
+    
+}
 
+// Completed memo handler when user triple taps a memo.
+function completeMemoHandler(e) {
+    if (e.type === 'tripletap') {
+        // Create new lists IF there in none yet
+        if (!state.lists) state.lists = new Lists();
+
+        const id = e.target.id;
+
+        // Style memo which is completed task.
+        $(`#${id}`).addClass('complete');
+
+        // Move completed task to bottom of list.
+        $(`#${id}`).insertAfter(`.memo:last`);
+
+        state.lists.completeMemo(id);
+    }
+}
 
 
 
@@ -355,6 +381,7 @@ function setHammerJs() {
 
         // create a recognizer
         const quadrupleTap = new Hammer.Tap({ event: 'quadrupletap', taps: 4 });
+        const tripleTap = new Hammer.Tap({ event: 'tripletap', taps: 3 });
         const dblTap = new Hammer.Tap({ event: 'doubletap', taps: 2 });
         const singleTap = new Hammer.Tap({ event: 'singletap' });
         const panRight = new Hammer.Pan({
@@ -371,25 +398,29 @@ function setHammerJs() {
         // add the recognizer
         mc.forEach(el => {
             el.add(quadrupleTap);
+            el.add(tripleTap);
             el.add(dblTap);
             el.add(singleTap);
             el.add(panRight);
             el.add(panUp);
             // we want to recognize this simulatenous, so a quadrupletap will be detected even while a tap has been recognized.
-            el.get('quadrupletap').recognizeWith(['doubletap', 'singletap']);
+            el.get('quadrupletap').recognizeWith(['tripletap', 'doubletap', 'singletap']);
+            el.get('tripletap').recognizeWith(['doubletap', 'singletap']);
             el.get('doubletap').recognizeWith('singletap');
             // we only want to trigger a tap, when we don't have detected a doubletap
-            el.get('doubletap').requireFailure('quadrupletap');
-            el.get('singletap').requireFailure(['doubletap', 'quadrupletap']);
+            el.get('tripletap').requireFailure('quadrupletap');
+            el.get('doubletap').requireFailure(['tripletap', 'quadrupletap']);
+            el.get('singletap').requireFailure(['doubletap', 'tripletap', 'quadrupletap']);
             el.get('panup').requireFailure('panright');
             el.get('panright').requireFailure('panup');
 
             // subscribe to events
-            // el.on('quadrupletap', removeMemoHandler);
+            el.on('quadrupletap', removeMemoHandler);
+            el.on('tripletap', completeMemoHandler);
             el.on('doubletap', editMemoHandler);
             el.on('singletap', changeToEachListHandler);
-            el.on('panright', removeMemoHandler);
-            el.on('panup', testPanUp);
+            // el.on('panright', removeMemoHandler);
+            el.on('panup', prevPageHandler);
         });
     }
 }
@@ -400,12 +431,12 @@ function testPanRight(e) {
     console.log(e.type);
     
 }
-function testPanUp(e) {
-    console.log(e.target);
+// function testPanUp(e) {
+//     console.log(e.target);
 
-    console.log(e.type);
+//     console.log(e.type);
     
-}
+// }
 
 
 
