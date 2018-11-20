@@ -19,7 +19,9 @@ export default class Lists {
             input,
             complete: true
         }
-        this.memos.push(memo);
+        const index = this.memos.findIndex(el => el.complete === 'complete');
+        this.memos.splice(index, 0, memo);
+
         localStorage.setItem('memos', JSON.stringify(this.memos));
         return memo;
     }

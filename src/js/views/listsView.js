@@ -1,6 +1,20 @@
 import $ from 'jquery';
 import { elements } from './base';
 
+export const renderLocalStorageData = () => {
+    // show update list on UI
+    const MemosOfLocalStorage = JSON.parse(localStorage.getItem('memos'));
+
+    // Render "ul" element.
+    renderMyListsPage();
+
+    // Render memos from local storage.
+    if (MemosOfLocalStorage) {
+        MemosOfLocalStorage.forEach(el => {
+            renderList(el);
+        });
+    }
+};
 
 export const renderMyListsPage = () => {
     const markup = `
@@ -9,6 +23,9 @@ export const renderMyListsPage = () => {
         </ul>
     `;
     elements.mainContainer.append(markup);
+
+    // For setting + cursor on the blank area.
+    $(`#main-container`).addClass('plus');
 };
 
 export const renderNewInput = (e) => {
@@ -17,6 +34,9 @@ export const renderNewInput = (e) => {
             <input class="memoInput" type="text">
         `;
         $('#lists-list').append(markup);
+
+        // Change cursor + into default when there is new input.
+        $(`#main-container`).removeClass('plus');
 
         // Turn off render input & on remove input.
         $('#main-container').off('click', renderNewInput);
@@ -47,8 +67,11 @@ export const renderList = memo => {
     const markup = `
         <li id="${memo.id}" class="memo ${memo.complete}">${memo.input}</li>
     `;
+
+    // Check if or not there is class="complete".
     if ($('#lists-list').has('.complete').length > 0) {
-        $('.complete').before(markup);
+        // Insert markup before the first memo with complete class.
+        $('.complete').first().before(markup);
     } else {
         $('#lists-list').append(markup);
     }
@@ -57,6 +80,9 @@ export const renderList = memo => {
 export const removeNewInput = (e) => {
     if (e.target === $('#main-container')[0]) {
         $('.memoInput:last-child').remove();
+
+        // Change cursor default into + when new input is removed.
+        $(`#main-container`).addClass('plus');
 
         // Turn off remove input & on render input.
         $('#main-container').off('click', removeNewInput);

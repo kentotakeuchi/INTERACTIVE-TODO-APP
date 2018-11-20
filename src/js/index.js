@@ -50,16 +50,8 @@ const settingsControl = (e) => {
     clearPrevPage();
 
     if (e.target.textContent === 'My Lists') {
-        const MemosOfLocalStorage = JSON.parse(localStorage.getItem('memos'));
-        // Render "ul" element.
-        listsView.renderMyListsPage();
-
-        // Render memos from local storage.
-        if (MemosOfLocalStorage) {
-            MemosOfLocalStorage.forEach(el => {
-                listsView.renderList(el);
-            });
-        }
+        // Render new data from local storage.
+        listsView.renderLocalStorageData();
 
         // Set HAMMER.JS event.
         setHammerJs();
@@ -122,16 +114,8 @@ const layerControl = (e) => {
         layerNameHandler(e);
 
     } else if (e.target.textContent === 'Lists') {
-        // Render "ul" element.
-        listsView.renderMyListsPage();
-
-        // Render memos from local storage.
-        const MemosOfLocalStorage = JSON.parse(localStorage.getItem('memos'));
-        if (MemosOfLocalStorage) {
-            MemosOfLocalStorage.forEach(el => {
-                listsView.renderList(el);
-            });
-        }
+        // Render new data from local storage.
+        listsView.renderLocalStorageData();
 
         // Set HAMMER.JS event.
         setHammerJs();
@@ -178,13 +162,6 @@ const listsControl = (e) => {
 
         // Render memo on the UI.
         listsView.renderList(memo);
-
-        // TODO
-        // Add new input value to local storage.
-        const MemosOfLocalStorage = JSON.parse(localStorage.getItem('memos'));
-        if (MemosOfLocalStorage) {
-            MemosOfLocalStorage.push(memo);
-        }
 
         // Remove input field from UI.
         $(e.target).remove();
@@ -268,17 +245,8 @@ function updateMemo(e) {
         // Prepare for rendering updated memos.
         clearPrevPage();
 
-        // show update list on UI
-        const MemosOfLocalStorage = JSON.parse(localStorage.getItem('memos'));
-        // Render "ul" element.
-        listsView.renderMyListsPage();
-
-        // Render memos from local storage.
-        if (MemosOfLocalStorage) {
-            MemosOfLocalStorage.forEach(el => {
-                listsView.renderList(el);
-            });
-        }
+        // Render new data from local storage.
+        listsView.renderLocalStorageData();
 
         // Set HAMMER.JS event.
         setHammerJs();
@@ -330,11 +298,16 @@ function prevPageHandler(e) {
 
 // Completed memo handler when user triple taps a memo.
 function completeMemoHandler(e) {
+    const id = e.target.id;
+
+    if ($(`#${id}`).hasClass('complete')) return;
+
     if (e.type === 'tripletap') {
+        // Prepare UI for each layer page.
+        clearPrevPage();
+
         // Create new lists IF there in none yet
         if (!state.lists) state.lists = new Lists();
-
-        const id = e.target.id;
 
         // Style memo which is completed task.
         $(`#${id}`).addClass('complete');
@@ -342,7 +315,16 @@ function completeMemoHandler(e) {
         // Move completed task to bottom of list.
         $(`#${id}`).insertAfter(`.memo:last`);
 
+        // Update data.
         state.lists.completeMemo(id);
+
+        // Render new data from local storage.
+        listsView.renderLocalStorageData();
+
+        // Set HAMMER.JS event.
+        setHammerJs();
+        // Set event again.
+        setEventHandlers();
     }
 }
 

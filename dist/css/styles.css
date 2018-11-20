@@ -54,6 +54,19 @@ button:focus {
     font-size: 15px;
 }
 
+.plus {
+    cursor: cell;
+}
+.complete {
+    cursor: default;
+}
+.true {
+    cursor: grab;
+}
+.true:active {
+    cursor: grabbing;
+}
+
 #settings-list, #sounds-list, #themes-list,
 #tips-list, #preferences-list, #lists-list {
     list-style-type: none;

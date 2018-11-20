@@ -15,6 +15,9 @@ export const renderSettingsPage = () => {
         </ul>
     `;
     elements.mainContainer.append(markup);
+
+    // For removing + cursor other than 2 and 3 layers.
+    $(`#main-container`).removeClass('plus');
 };
 
 export const renderSoundsPage = () => {
