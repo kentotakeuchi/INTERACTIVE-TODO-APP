@@ -5,19 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
     <!-- Bootstrap css -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
+
     <!-- Custom css -->
     <link rel="stylesheet" href="css/styles.css">
+
     <!-- Favicon -->
     <link rel="icon" href="favicon.ico" type="image/x-icon" sizes="16x16">
+
     <title>MEMO</title>
 </head>
 <body>
     <div id="container">
 
-        <div id="main-container">
+        <div id="main-container" class="heat-map">
             <ul id="settings-list">
+                <audio class="audio1">
+                    <source src="./audio/click_1.mp3"  type="audio/mpeg">
+                </audio>
+                <audio class="audio2">
+                    <source src="./audio/click_2.mp3"  type="audio/mpeg">
+                </audio>
+                <audio class="audio3">
+                    <source src="./audio/click_3.mp3"  type="audio/mpeg">
+                </audio>
                 <li class="my-lists">My Lists</li>
                 <li class="sounds" class="text-success">Sounds</li>
                 <li class="themes">Themes</li>
@@ -28,20 +41,40 @@
 
         <div id="sub-container">
             <ul id="layer-names">
+                <audio class="audio1">
+                    <source src="./audio/click_1.mp3" type="audio/mpeg">
+                </audio>
+                <audio class="audio2">
+                    <source src="./audio/click_2.mp3" type="audio/mpeg">
+                </audio>
+                <audio class="audio3">
+                    <source src="./audio/click_3.mp3" type="audio/mpeg">
+                </audio>
                 <li id="layer-name-settings">Settings</li>
                 <li id="layer-name-lists">Lists</li>
                 <li id="layer-name-listName">List name</li>
-                <li class="tutorial">Tutorial</li>
+                <li class="tutorial" data-toggle="modal" data-target="#exampleModal">Tutorial</li>
             </ul>
         </div>
 
         <!-- Modal -->
-        <div class="modal" id="modal">
-            <button class="close-button" id="close-button">Obvious Close Button</button>
-            <div class="modal-guts">
-                <h1>Modal Example</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae expedita corrupti laudantium aperiam, doloremque explicabo ipsum earum dicta saepe delectus totam vitae ipsam doloribus et obcaecati facilis eius assumenda, cumque.</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae expedita corrupti laudantium aperiam, doloremque explicabo ipsum earum dicta saepe delectus totam vitae ipsam doloribus et obcaecati facilis eius assumenda, cumque.</p>
+        <div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body">
+                ...
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
             </div>
         </div>
 

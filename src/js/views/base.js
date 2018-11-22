@@ -23,8 +23,7 @@ export const clearPrevPage = () => {
 };
 
 export const layerNameHandler = (e) => {
-    console.log('e', e);
-    if (e.target.innerText === 'Settings') {
+    if (e.target.innerText === 'Settings' || $(e.target).parent()[0].id === 'lists-list') {
         elements.layerNameSettings.css('font-weight', 'bold');
         elements.layerNameLists.css('font-weight', 'initial');
         elements.layerNameListName.css('font-weight', 'initial');

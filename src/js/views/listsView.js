@@ -19,7 +19,15 @@ export const renderLocalStorageData = () => {
 export const renderMyListsPage = () => {
     const markup = `
         <ul id="lists-list">
-
+            <audio class="audio1">
+                <source src="./audio/click_1.mp3"  type="audio/mpeg">
+            </audio>
+            <audio class="audio2">
+                <source src="./audio/click_2.mp3"  type="audio/mpeg">
+            </audio>
+            <audio class="audio3">
+                <source src="./audio/click_3.mp3"  type="audio/mpeg">
+            </audio>
         </ul>
     `;
     elements.mainContainer.append(markup);

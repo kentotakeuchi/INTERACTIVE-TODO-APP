@@ -17,7 +17,7 @@ export default class Lists {
         const memo = {
             id: uniqid(),
             input,
-            complete: true
+            complete: 'no'
         }
         const index = this.memos.findIndex(el => el.complete === 'complete');
         this.memos.splice(index, 0, memo);
