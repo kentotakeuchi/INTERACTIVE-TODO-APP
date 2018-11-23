@@ -133,10 +133,19 @@ const layerControl = (e) => {
         // Styling layer name to bold & initial.
         layerNameHandler(e);
     } else if (e.target.textContent === 'Tutorial') {
-        
+        // Carousel each slide with 'click'.
+        setHammerJs3();
 
-        // Styling layer name to bold & initial.
-        layerNameHandler(e);
+        // Toggle modal.
+        $(`#tutorialModal`).modal('toggle');
+
+        // Render settings page.
+        settingsView.renderSettingsPage();
+
+        // Bold layer name.
+        elements.layerNameSettings.css('font-weight', 'bold');
+        elements.layerNameLists.css('font-weight', 'initial');
+        elements.layerNameListName.css('font-weight', 'initial');
     }
     // Set event again.
     setEventHandlers();
@@ -319,6 +328,12 @@ function completeMemoHandler(e) {
         // Set event again.
         setEventHandlers();
     }
+};
+
+
+function tutorialCarouselHandler(e) {
+    console.log('tutorial click');
+    $('.modal-body').carousel('next');
 }
 
 
@@ -435,6 +450,22 @@ function setHammerJs2(e) {
 
         preferences.on('panup', prevPageHandler2);
     }
+};
+
+// Hammer.js event handler for "Tutorial".
+function setHammerJs3() {
+    console.log('hm js3');
+    
+    const singleTap = new Hammer.Tap({ event: 'singletap' });
+
+    const carousel = document.querySelector(`.carousel-inner`);
+
+    const tutorial = new Hammer.Manager(carousel);
+
+    tutorial.add(singleTap);
+
+    tutorial.off('singletap', tutorialCarouselHandler);
+    tutorial.on('singletap', tutorialCarouselHandler);
 };
 
 

@@ -143,5 +143,38 @@ button:focus {
 *********************/
 
 
+/********************
+* Modal
+*********************/
+
+.modal-header {
+    text-align: center !important;
+    padding: .5rem !important;
+}
+
+/* Fix close button position on each modal. */
+.modal-header .close {
+    padding: 0;
+    margin: auto;
+}
+.close {
+    line-height: 0;
+}
+/* Adjust the position of close icon for each modal. */
+.modal-header .col-12 {
+    flex: 0 5 100%;
+}
+
+.carousel-indicators li {
+    border-radius: 50%;
+    width: 20px !important;
+    height: 20px !important;
+}
+
+.modal-content {
+    background-color: ;
+}
+
+
 
 
