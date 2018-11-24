@@ -7,14 +7,17 @@ import { elements } from './base';
 export const renderSettingsPage = () => {
     const markup = `
         <ul id="settings-list">
+            <audio class="audio0">
+                <source src="./audio/hover_1.mp3" type="audio/mpeg">
+            </audio>
             <audio class="audio1">
                 <source src="./audio/click_1.mp3" type="audio/mpeg">
             </audio>
             <audio class="audio2">
                 <source src="./audio/click_2.mp3" type="audio/mpeg">
             </audio>
-            <audio class="audio3">
-                <source src="./audio/click_3.mp3" type="audio/mpeg">
+            <audio class="audio4">
+                <source src="./audio/click_4.mp3" type="audio/mpeg">
             </audio>
             <li class="my-lists">My Lists</li>
             <li class="sounds">Sounds</li>
@@ -34,17 +37,17 @@ export const renderSoundsPage = () => {
         <ul id="sounds-list">
             <li class="clear">
                 <audio class="audio1">
-                    <source src="./audio/click_1.mp3"  type="audio/mpeg">
+                    <source src="./audio/click_1.mp3" type="audio/mpeg">
                 </audio>
                 Clear</li>
             <li class="sci-fi">
                 <audio class="audio2">
-                    <source src="./audio/click_2.mp3"  type="audio/mpeg">
+                    <source src="./audio/click_2.mp3" type="audio/mpeg">
                 </audio>
                 Sci-Fi</li>
             <li class="8bit">
-                <audio class="audio3">
-                    <source src="./audio/click_3.mp3"  type="audio/mpeg">
+                <audio class="audio4">
+                    <source src="./audio/click_4.mp3" type="audio/mpeg">
                 </audio>
                 8-bit</li>
         </ul>
@@ -55,14 +58,17 @@ export const renderSoundsPage = () => {
 export const renderThemesPage = () => {
     const markup = `
         <ul id="themes-list">
+            <audio class="audio0">
+                <source src="./audio/hover_1.mp3" type="audio/mpeg">
+            </audio>
             <audio class="audio1">
                 <source src="./audio/click_1.mp3" type="audio/mpeg">
             </audio>
             <audio class="audio2">
                 <source src="./audio/click_2.mp3" type="audio/mpeg">
             </audio>
-            <audio class="audio3">
-                <source src="./audio/click_3.mp3" type="audio/mpeg">
+            <audio class="audio4">
+                <source src="./audio/click_4.mp3" type="audio/mpeg">
             </audio>
             <li>Heat map</li>
             <li>Graphite</li>
@@ -76,14 +82,17 @@ export const renderThemesPage = () => {
 export const renderTipsPage = () => {
     const markup = `
         <ul id="tips-list">
+            <audio class="audio0">
+                <source src="./audio/hover_1.mp3" type="audio/mpeg">
+            </audio>
             <audio class="audio1">
-                <source src="./audio/click_1.mp3"  type="audio/mpeg">
+                <source src="./audio/click_1.mp3" type="audio/mpeg">
             </audio>
             <audio class="audio2">
-                <source src="./audio/click_2.mp3"  type="audio/mpeg">
+                <source src="./audio/click_2.mp3" type="audio/mpeg">
             </audio>
-            <audio class="audio3">
-                <source src="./audio/click_3.mp3"  type="audio/mpeg">
+            <audio class="audio4">
+                <source src="./audio/click_4.mp3" type="audio/mpeg">
             </audio>
             <li class="tutorial">Welcome Tutorial</li>
             <li class="">Click to Add Items</li>
@@ -96,14 +105,17 @@ export const renderTipsPage = () => {
 export const renderPreferencesPage = () => {
     const markup = `
         <ul id="preferences-list">
+            <audio class="audio0">
+                <source src="./audio/hover_1.mp3" type="audio/mpeg">
+            </audio>
             <audio class="audio1">
-                <source src="./audio/click_1.mp3"  type="audio/mpeg">
+                <source src="./audio/click_1.mp3" type="audio/mpeg">
             </audio>
             <audio class="audio2">
-                <source src="./audio/click_2.mp3"  type="audio/mpeg">
+                <source src="./audio/click_2.mp3" type="audio/mpeg">
             </audio>
-            <audio class="audio3">
-                <source src="./audio/click_3.mp3"  type="audio/mpeg">
+            <audio class="audio4">
+                <source src="./audio/click_4.mp3" type="audio/mpeg">
             </audio>
             <li class="">iCloud</li>
             <li class="">Menu Bar Icon</li>
@@ -146,10 +158,10 @@ export const changeSounds = (e) => {
             });
         }
     } else if (sound === '8-bit') {
-        const audioPlay3 = $('.audio3')[0].play();
+        const audioPlay4 = $('.audio4')[0].play();
 
-        if (audioPlay3 !== undefined) {
-            audioPlay3.then(() => {
+        if (audioPlay4 !== undefined) {
+            audioPlay4.then(() => {
               // Automatic playback started!
             })
             .catch(error => {
@@ -169,6 +181,23 @@ export const playSound = () => {
     console.log('curSound', curSound);
 
     const audioPlay = $(`.${curSound}`)[0].play();
+    console.log('audioPlay', audioPlay);
+
+    if (audioPlay !== undefined) {
+        audioPlay.then(() => {
+          // Automatic playback started!
+        })
+        .catch(error => {
+          // Automatic playback failed.
+          // Show a UI element to let the user manually start playback.
+        });
+    }
+};
+
+export const playHoverSound = () => {
+    console.log('playHoverSound');
+
+    const audioPlay = $(`.audio0`)[0].play();
     console.log('audioPlay', audioPlay);
 
     if (audioPlay !== undefined) {

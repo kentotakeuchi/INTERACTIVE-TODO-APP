@@ -15,7 +15,7 @@ export const elements = {
     tutorial: $('.tutorial'),
 
     listsList: $('#lists-list'),
-    memoInput: $('.memoInput')
+    listInput: $('.listInput')
 };
 
 export const clearPrevPage = () => {
@@ -44,4 +44,12 @@ export const layerNameHandler = (e) => {
         elements.layerNameListName.css('font-weight', 'initial');
         elements.tutorial.css('font-weight', 'bold');
     }
-}
+};
+
+export const displayModalHandler = () => {
+    $(`#tutorialModal`).modal('toggle');
+};
+
+export const tutorialCarouselHandler = () => {
+    $('.modal-body').carousel('next');
+};
