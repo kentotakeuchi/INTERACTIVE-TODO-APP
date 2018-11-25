@@ -65,14 +65,13 @@ export default class Lists {
      * Layer 3
      **********/
 
-    addMemo3(input, id) {
+    addMemo3(input, parentID) {
         const memo = {
             id: uniqid(),
             input,
             complete: 'no',
         }
-        const index = this.lists.findIndex(el => el.id === id);
-        console.log('this.lists[index].memos', this.lists[index].memos);
+        const index = this.lists.findIndex(el => el.id === parentID);
 
         this.lists[index].memos.push(memo);
 
@@ -93,26 +92,29 @@ export default class Lists {
         localStorage.setItem('lists', JSON.stringify(this.lists));
     }
 
-    updateMemo3(id, newInput) {
-        this.lists[n][memos].find(el => el.id === id).input = newInput;
+    updateMemo3(id, newInput, parentID) {
+        const index = this.lists.findIndex(el => el.id === parentID);
+
+        this.lists[index].memos.find(el => el.id === id).input = newInput;
 
         // Update memo in local storage.
         localStorage.setItem('lists', JSON.stringify(this.lists));
     }
 
-    completeMemo3(id) {
+    completeMemo3(id, parentID) {
+        const parentIndex = this.lists.findIndex(el => el.id === parentID);
+
         // Add class name "complete" to style completed task.
-        this.lists[n][memos].find(el => el.id === id).complete = 'complete';
+        this.lists[parentIndex].memos.find(el => el.id === id).complete = 'complete';
 
         // Move completed task to last index of array.
-        const index = this.lists[n][memos].findIndex(el => el.id === id);
+        const index = this.lists[parentIndex].memos.findIndex(el => el.id === id);
         // Cut the completed task.
-        let cut = this.lists[n][memos].splice(index, 1)[0];
+        let cut = this.lists[parentIndex].memos.splice(index, 1)[0];
         // Insert cutted task.
-        this.lists[n][memos].splice(this.lists[n][memos].length, 0, cut);
+        this.lists[parentIndex].memos.splice(this.lists[parentIndex].memos.length, 0, cut);
 
         // Update memo in local storage.
         localStorage.setItem('lists', JSON.stringify(this.lists));
     }
-
-}
+};

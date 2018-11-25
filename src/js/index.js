@@ -22,8 +22,8 @@ function setEventHandlers() {
     elements.layerNameSettings.on('click', layerControl);
     elements.layerNameLists.off('click', layerControl);
     elements.layerNameLists.on('click', layerControl);
-    elements.layerNameListName.off('click', layerControl);
-    elements.layerNameListName.on('click', layerControl);
+    // elements.layerNameListName.off('click', layerControl);
+    // elements.layerNameListName.on('click', layerControl);
     elements.tutorial.off('click', layerControl);
     elements.tutorial.on('click', layerControl);
 
@@ -179,8 +179,6 @@ const layerControl = (e) => {
 
 // Lists -> Settings
 function prevPageHandler(e) {
-    const id = e.target.id;
-
     // Prepare for rendering prev page.
     clearPrevPage();
 
@@ -193,7 +191,7 @@ function prevPageHandler(e) {
     }
     // Set event again.
     setEventHandlers();
-}
+};
 
 // Sounds, Themes, Tips, Preferences -> Settings
 function prevPageHandler2(e) {
@@ -212,6 +210,24 @@ function prevPageHandler2(e) {
     }
     // Set event again.
     setEventHandlers();
+};
+
+// Layer3 -> Layer2
+function prevPageHandler3(e) {
+    // Prepare for rendering prev page.
+    clearPrevPage();
+
+    if ($(e.target).parent()[0].id === 'memo-list') {
+        // Render settings page.
+        listsView.renderLocalStorageData();
+
+        // Styling layer name to bold & initial.
+        layerNameHandler(e);
+    }
+    // Set event again.
+    setEventHandlers();
+    // Set HAMMER.JS event.
+    setHammerJs();
 }
 
 /*******************
@@ -361,16 +377,14 @@ function completeListHandler(e) {
 
  // Layer2 -> Layer3
 function changeToMemoHandler(e) {
-    console.log('e.target', e.target);
+    // Get id for setHammerJs4(id).
+    const id = e.target.id;
 
     // Prepare UI for each layer page.
     clearPrevPage();
 
     // Render new data from local storage.
     listsView.renderLocalStorageData3(e);
-
-    // Set HAMMER.JS event.
-    // setHammerJs();
 
     // Styling layer name to bold & initial.
     layerNameHandler(e);
@@ -381,11 +395,13 @@ function changeToMemoHandler(e) {
 
     // Set event again.
     setEventHandlers();
-    // TODO: set hammer4 later.
+    // Set hammer event for layer3.
+    setHammerJs4(id);
 };
 
 const addMemoHandler3 = (e) => {
-    const id = e.target.parentElement.className;
+    // Get parent id for addMemo(input, id) & setHammerJs4(id).
+    const parentID = e.target.parentElement.className;
 
     if (e.keyCode === 13) {
         // Create new lists IF there in none yet
@@ -395,7 +411,7 @@ const addMemoHandler3 = (e) => {
         const input = $('.memoInput').val();
 
         // Add memo into memos array.
-        const memo = state.lists.addMemo3(input, id);
+        const memo = state.lists.addMemo3(input, parentID);
 
         // Render memo on the UI.
         listsView.renderMemo3(memo);
@@ -406,15 +422,14 @@ const addMemoHandler3 = (e) => {
         // Set event again.
         setEventHandlers();
         // Set HAMMER.JS event for created memo.
-        setHammerJs4(id);
+        setHammerJs4(parentID);
     }
 };
 
 function removeMemoHandler3(e) {
-    console.log('e.target', e.target);
-    const parentID = e.target.parentElement.className;
-
     e.preventDefault();
+    // Get parent id for deleteMemo(id, parentID).
+    const parentID = e.target.parentElement.className;
 
     if (e.type === 'quadrupletap') {
         // Create new lists IF there in none yet
@@ -431,13 +446,112 @@ function removeMemoHandler3(e) {
     }
 };
 
+// NEXT TASK!!! -> EDIT -> UPDATE -> COMPLETE
+function editMemoHandler3(e) {
+    e.preventDefault();
+
+    // Check whether "input" field has already existed or not.
+    // And remove current input & show hidden memo.
+    if ($('#memo-list').has('input').length > 0) {
+        $('input').remove();
+        $('.memo:hidden').show();
+    }
+
+    if (e.type === 'doubletap') {
+        const target = e.target;
+
+        // Create new lists IF there in none yet
+        if (!state.lists) state.lists = new Lists();
+
+        // Get id of double clicked memo.
+        const id = e.target.id;
+
+        // Hide tapped memo list.
+        $(`#${id}`).hide();
+
+        // show input fields with prev value.
+        listsView.renderNewInputForEdit3(target);
+
+        // Turn off the event to avoid event conflict.
+        $('#memo-list').off('keypress', '.memoInput', addMemoHandler3);
+        // Set the event of press enter key.
+        $('#memo-list').on('keypress', '.memoInput', updateMemoHandler3);
+    }
+};
+
+
+// Update memo when user presses enter key.
+function updateMemoHandler3(e) {
+    console.log('e', e);
+
+    if (e.keyCode === 13) {
+        // Get parent id for updateMemo3(id, newInput, parentID) & setHammerJs4(parentID).
+        const parentID = e.target.parentElement.className;
+        // Get id of hidden memo.
+        const id = e.target.previousElementSibling.id;
+
+        // Get updated input value.
+        const newInput = e.target.value;
+
+        // user press enter -> update data
+        state.lists.updateMemo3(id, newInput, parentID);
+
+        // Prepare for rendering updated memos.
+        clearPrevPage();
+
+        // Render new data from local storage.
+        listsView.renderLocalStorageData3(e);
+
+        // Set HAMMER.JS event.
+        setHammerJs4(parentID);
+
+        // Turn off the event to avoid event conflict.
+        $('#memo-list').off('keypress', '.memoInput', updateMemoHandler3);
+        // Set the event of press enter key.
+        $('#memo-list').on('keypress', '.memoInput', addMemoHandler3);
+    }
+};
+
+// Completed memo handler when user triple taps a memo.
+function completeMemoHandler3(e) {
+    // Get parent id for setHammerJs4(parentID).
+    const parentID = e.target.parentElement.className;
+    const id = e.target.id;
+
+    if ($(`#${id}`).hasClass('complete')) return;
+
+    if (e.type === 'tripletap') {
+        // Prepare UI for each layer page.
+        clearPrevPage();
+
+        // Create new lists IF there in none yet
+        if (!state.lists) state.lists = new Lists();
+
+        // Style memo which is completed task.
+        $(`#${id}`).addClass('complete');
+
+        // Move completed task to bottom of list.
+        $(`#${id}`).insertAfter(`.memo:last`);
+
+        // Update data.
+        state.lists.completeMemo3(id, parentID);
+
+        // Render new data from local storage.
+        listsView.renderLocalStorageData3(e);
+
+        // Set event again.
+        setEventHandlers();
+        // Set HAMMER.JS event.
+        setHammerJs4(parentID);
+    }
+};
 
 
 
 
 
 // TODO: Seperate this function from index.js.
-// Hammer.js event handler for "List layer".
+// Hammer.js event handler for "Layer2".
 function setHammerJs() {
     const MemosOfLocalStorage = JSON.parse(localStorage.getItem('lists'));
 
@@ -501,10 +615,10 @@ function setHammerJs() {
     }
 }
 
-// Hammer.js event handler for "Lists layer".
-function setHammerJs4(id) {
+// Hammer.js event handler for "Layer3".
+function setHammerJs4(parentID) {
     const MemosOfLocalStorage = JSON.parse(localStorage.getItem('lists'));
-    const index = MemosOfLocalStorage.findIndex(el => el.id === id);
+    const index = MemosOfLocalStorage.findIndex(el => el.id === parentID);
 
     let memos = [];
     if (MemosOfLocalStorage[index].memos) {
@@ -558,11 +672,11 @@ function setHammerJs4(id) {
 
             // subscribe to events
             el.on('quadrupletap', removeMemoHandler3);
-            // el.on('tripletap', completeMemoHandler3);
-            // el.on('doubletap', editMemoHandler3);
+            el.on('tripletap', completeMemoHandler3);
+            el.on('doubletap', editMemoHandler3);
             // el.on('singletap', changeToMemoHandler);
             // el.on('panright', removeMemoHandler);
-            // el.on('panup', prevPageHandler);
+            el.on('panup', prevPageHandler3);
         });
     }
 }

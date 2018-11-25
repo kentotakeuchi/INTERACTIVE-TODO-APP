@@ -135,20 +135,27 @@ export const deleteMemo = id => {
  **********/
 
 export const renderLocalStorageData3 = (e) => {
-    const id = e.target.id;
+    console.log('e', e);
+    console.log('e.target', e.target);
+
+    let id;
+    if (e.target.parentElement.id === 'memo-list') {
+        // If the event comes from 'updateMemoHandler3(e)' or 'completeMemoHandler3(e)'.
+        id = e.target.parentElement.className;
+    } else {
+        // If the event comes from 'changeToMemoHandler(e)'.
+        id = e.target.id;
+    }
     console.log('id', id);
+
 
     // show update list on UI
     const MemosOfLocalStorage = JSON.parse(localStorage.getItem('lists'));
-    console.log('MemosOfLocalStorage', MemosOfLocalStorage);
-
 
     // Render "ul" element.
     renderMemosPage3(id);
 
     const index = MemosOfLocalStorage.findIndex(el => el.id === id);
-    console.log('index', index);
-    console.log('MemosOfLocalStorage[index]', MemosOfLocalStorage[index]);
 
     // Render memos from local storage.
     if (MemosOfLocalStorage[index].memos) {
@@ -224,6 +231,40 @@ export const removeNewInput3 = (e) => {
         // Turn off remove input & on render input.
         $('#main-container').off('click', removeNewInput3);
         $('#main-container').on('click', renderNewInput3);
+    }
+};
+
+export const renderNewInputForEdit3 = (target) => {
+    // MEMO: target.id -> insertAfter(markup) probably.
+    const id = target.id;
+    const markup = `
+        <input class="memoInput" type="text" value="${target.innerText}">
+    `;
+    $(`#${id}`).after(markup);
+
+    // Focus input field automatically when input shows.
+    $('.listInput').focus();
+
+    // Turn off render input & on remove input.
+    $('#main-container').off('click', renderNewInput);
+    $('#main-container').on('click', removeNewInputForEdit);
+};
+
+export const removeNewInputForEdit3 = (e) => {
+    if (e.target === $('#main-container')[0]) {
+        $('#main-container').find('input').remove();
+
+        // Detect element which display is none & show it again.
+        $('#main-container').find('li').each((index, el) => {
+            if (el.style.display === 'none') {
+                el.style.display = 'block';
+            }
+        });
+
+        // Turn off remove input & on render input.
+        $('#main-container').off('click', removeNewInputForEdit);
+        $('#main-container').off('click', renderNewInput);
+        $('#main-container').on('click', renderNewInput);
     }
 };
 

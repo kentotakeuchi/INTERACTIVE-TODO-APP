@@ -91,13 +91,15 @@ button:focus {
 }
 
 #settings-list, #sounds-list, #themes-list,
-#tips-list, #preferences-list, #lists-list {
+#tips-list, #preferences-list, #lists-list,
+#memo-list {
     list-style-type: none;
     padding: 0;
 }
 
 #settings-list > li, #sounds-list > li, #themes-list > li,
-#tips-list > li, #preferences-list > li, #lists-list > li {
+#tips-list > li, #preferences-list > li, #lists-list > li,
+#memo-list > li {
     border-bottom: 1px solid #afafaf;
 }
 
