@@ -2,22 +2,17 @@
 * General
 *********************/
 
+ul {
+    margin-bottom: 0;
+}
+
 li {
-    padding: 10px 10px;
+    padding: 12px 12px;
     list-style-type: none;
 }
 
 li:hover {
     background-color: rgba(0, 0, 0, 0.135);
-}
-
-input {
-    margin: 10px 10px;
-    padding: 0 10px;
-    border-radius: 10px;
-    border-bottom: 1px solid #afafaf;
-    color: #888888;
-    width: 90%;
 }
 
 input:focus,
@@ -33,7 +28,7 @@ button:focus {
     flex-direction: row;
     align-items: center;
     height: 100vh;
-  }
+}
 
 #main-container {
     display: flex;
@@ -46,30 +41,136 @@ button:focus {
     overflow: scroll;
     border-radius: 10px;
     color: white;
-    font-weight: 900;
+    font-weight: 600;
     font-size: 15px;
+    background-color: black;
+}
+
+/* Hover New Input */
+.hidden.heat-map {
+    /* Trapezoid */
+    border-top: 25px solid rgba(255, 196, 0, 0.768);
+    border-left: 25px solid transparent;
+    border-right: 25px solid transparent;
+    height: 0;
+    width: 100%;
+    opacity: 1;
+    animation: trapezoid-heatmap .5s;
+}
+.hidden2.heat-map {
+    animation: trapezoid2-heatmap .5s;
+}
+.hidden.graphite {
+    /* Trapezoid */
+    border-top: 25px solid rgba(207, 206, 218, 0.809);
+    border-left: 25px solid transparent;
+    border-right: 25px solid transparent;
+    height: 0;
+    width: 100%;
+    opacity: 1;
+    animation: trapezoid-graphite .5s;
+}
+.hidden2.graphite {
+    animation: trapezoid2-graphite .5s;
+}
+.hidden.pretty-princes {
+    /* Trapezoid */
+    border-top: 25px solid rgba(255, 194, 216, 0.809);
+    border-left: 25px solid transparent;
+    border-right: 25px solid transparent;
+    height: 0;
+    width: 100%;
+    opacity: 1;
+    animation: trapezoid-prettyprinces .5s;
+}
+.hidden2.pretty-princes {
+    animation: trapezoid2-prettyprinces .5s;
+}
+.hidden.lucky-clover {
+    /* Trapezoid */
+    border-top: 25px solid rgba(220, 226, 100, 0.809);
+    border-left: 25px solid transparent;
+    border-right: 25px solid transparent;
+    height: 0;
+    width: 100%;
+    opacity: 1;
+    animation: trapezoid-luckyclover .5s;
+}
+.hidden2.lucky-clover {
+    animation: trapezoid2-luckyclover .5s;
+}
+
+/* Render New Input */
+input {
+    background-color: transparent;
+    border-style: none;
+    width: 90%;
+    color: #444444;
+    font-weight: 600;
+}
+.inputContainer {
+    padding: 10px 10px;
+    width: 100%;
+    transition: all .2s ease-out;
+}
+
+.inputContainer.heat-map {
+    background-color: rgb(255, 196, 0);
+}
+.inputContainer.graphite {
+    background-color: rgb(207, 206, 218);
+}
+.inputContainer.pretty-princes {
+    background-color: rgb(255, 194, 216);
+}
+.inputContainer.lucky-clover {
+    background-color: rgb(220, 226, 100);
+}
+
+.inputContainer.removed-item {
+    padding: 10px 0;
+    width: 0;
+}
+
+.memoEditInput {
+    padding: 20px 12px;
+    background-color: transparent;
+    border-style: none;
+    width: 100%;
+    color: #444444;
+    font-weight: 600;
+    border-bottom: .1px solid #afafaf;
+}
+.listEditInput {
+    padding: 20px 12px;
+    background-color: transparent;
+    border-style: none;
+    width: 100%;
+    color: #444444;
+    font-weight: 600;
+    border-bottom: .1px solid #afafaf;
 }
 
 /* Themes */
-.heat-map {
+.heat-map > ul {
     background-image: linear-gradient(
         to top,
-        rgb(255, 247, 0),
+        rgb(255, 196, 0),
         rgb(255, 0, 0));
 }
-.graphite {
+.graphite > ul {
     background-image: linear-gradient(
         to top,
         rgb(207, 206, 218),
         rgb(87, 87, 92));
 }
-.pretty-princes {
+.pretty-princes > ul {
     background-image: linear-gradient(
         to top,
         rgb(255, 194, 216),
         rgb(255, 0, 128));
 }
-.lucky-clover {
+.lucky-clover > ul {
     background-image: linear-gradient(
         to top,
         rgb(220, 226, 100),
@@ -100,7 +201,7 @@ button:focus {
 #settings-list > li, #sounds-list > li, #themes-list > li,
 #tips-list > li, #preferences-list > li, #lists-list > li,
 #memo-list > li {
-    border-bottom: 1px solid #afafaf;
+    border-bottom: .1px solid #afafaf;
 }
 
 /********************
@@ -173,10 +274,9 @@ button:focus {
     height: 20px !important;
 }
 
-.modal-content {
-    background-color: ;
+.carousel-indicators {
+    margin: 110px;
 }
-
 
 /********************
 * Responsive
@@ -193,4 +293,158 @@ button:focus {
         display: none;
     }
 
+/********************
+* layer 3
+*********************/
 
+/********************
+* Animation
+*********************/
+
+@keyframes trapezoid-heatmap {
+    0% {
+        border-top: 0 solid rgba(255, 196, 0, 0.768);
+        border-left: 0 solid transparent;
+        border-right: 0 solid transparent;
+        height: 0;
+        width: 100%;
+        opacity: 0;
+    }
+    100% {
+        border-top: 25px solid rgba(255, 196, 0, 0.768);
+        border-left: 25px solid transparent;
+        border-right: 25px solid transparent;
+        height: 0;
+        width: 100%;
+        opacity: 1;
+    }
+}
+@keyframes trapezoid2-heatmap {
+    0% {
+        border-top: 25px solid rgba(255, 196, 0, 0.768);
+        border-left: 25px solid transparent;
+        border-right: 25px solid transparent;
+        height: 0;
+        width: 100%;
+        opacity: 1;
+    }
+    100% {
+        border-top: 0 solid rgba(255, 196, 0, 0.768);
+        border-left: 0 solid transparent;
+        border-right: 0 solid transparent;
+        height: 0;
+        width: 100%;
+        opacity: 0;
+    }
+}
+
+@keyframes trapezoid-graphite {
+    0% {
+        border-top: 0 solid rgba(207, 206, 218, 0.809);
+        border-left: 0 solid transparent;
+        border-right: 0 solid transparent;
+        height: 0;
+        width: 100%;
+        opacity: 0;
+    }
+    100% {
+        border-top: 25px solid rgba(207, 206, 218, 0.809);
+        border-left: 25px solid transparent;
+        border-right: 25px solid transparent;
+        height: 0;
+        width: 100%;
+        opacity: 1;
+    }
+}
+@keyframes trapezoid2-graphite {
+    0% {
+        border-top: 25px solid rgba(207, 206, 218, 0.809);
+        border-left: 25px solid transparent;
+        border-right: 25px solid transparent;
+        height: 0;
+        width: 100%;
+        opacity: 1;
+    }
+    100% {
+        border-top: 0 solid rgba(207, 206, 218, 0.809);
+        border-left: 0 solid transparent;
+        border-right: 0 solid transparent;
+        height: 0;
+        width: 100%;
+        opacity: 0;
+    }
+}
+
+@keyframes trapezoid-prettyprinces {
+    0% {
+        border-top: 0 solid rgba(255, 194, 216, 0.809);
+        border-left: 0 solid transparent;
+        border-right: 0 solid transparent;
+        height: 0;
+        width: 100%;
+        opacity: 0;
+    }
+    100% {
+        border-top: 25px solid rgba(255, 194, 216, 0.809);
+        border-left: 25px solid transparent;
+        border-right: 25px solid transparent;
+        height: 0;
+        width: 100%;
+        opacity: 1;
+    }
+}
+@keyframes trapezoid2-prettyprinces {
+    0% {
+        border-top: 25px solid rgba(255, 194, 216, 0.809);
+        border-left: 25px solid transparent;
+        border-right: 25px solid transparent;
+        height: 0;
+        width: 100%;
+        opacity: 1;
+    }
+    100% {
+        border-top: 0 solid rgba(255, 194, 216, 0.809);
+        border-left: 0 solid transparent;
+        border-right: 0 solid transparent;
+        height: 0;
+        width: 100%;
+        opacity: 0;
+    }
+}
+
+@keyframes trapezoid-luckyclover {
+    0% {
+        border-top: 0 solid rgba(220, 226, 100, 0.809);
+        border-left: 0 solid transparent;
+        border-right: 0 solid transparent;
+        height: 0;
+        width: 100%;
+        opacity: 0;
+    }
+    100% {
+        border-top: 25px solid rgba(220, 226, 100, 0.809);
+        border-left: 25px solid transparent;
+        border-right: 25px solid transparent;
+        height: 0;
+        width: 100%;
+        opacity: 1;
+    }
+}
+@keyframes trapezoid2-luckyclover {
+    0% {
+        border-top: 25px solid rgba(220, 226, 100, 0.809);
+        border-left: 25px solid transparent;
+        border-right: 25px solid transparent;
+        height: 0;
+        width: 100%;
+        opacity: 1;
+    }
+    100% {
+        border-top: 0 solid rgba(220, 226, 100, 0.809);
+        border-left: 0 solid transparent;
+        border-right: 0 solid transparent;
+        height: 0;
+        width: 100%;
+        opacity: 0;
+    }
+}

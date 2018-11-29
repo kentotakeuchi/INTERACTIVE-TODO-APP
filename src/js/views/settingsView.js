@@ -128,8 +128,8 @@ export const renderPreferencesPage = () => {
 /**********************
  * Change sound
  **********************/
+
 export const changeSounds = (e) => {
-    console.log('e.target', e.target);
     const target = e.target;
     const sound = e.target.innerText;
 
@@ -175,13 +175,10 @@ export const changeSounds = (e) => {
 };
 
 export const playSound = () => {
-    console.log('playSound');
 
     const curSound = localStorage.getItem('sound');
-    console.log('curSound', curSound);
 
     const audioPlay = $(`.${curSound}`)[0].play();
-    console.log('audioPlay', audioPlay);
 
     if (audioPlay !== undefined) {
         audioPlay.then(() => {

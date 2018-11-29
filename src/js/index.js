@@ -44,8 +44,8 @@ function setEventHandlers() {
     $('#lists-list').on('keypress', '.listInput', addListHandler);
 
     // Memos page.
-    $('#memo-list').off('keypress', '.memoInput', addMemoHandler3);
-    $('#memo-list').on('keypress', '.memoInput', addMemoHandler3);
+    $('#main-container').off('keypress', '.memoInput', addMemoHandler3);
+    $('#main-container').on('keypress', '.memoInput', addMemoHandler3);
 
     // Sound effect on all <li>.
     $('li').off('click', settingsView.playSound);
@@ -72,6 +72,8 @@ const settingsControl = (e) => {
         // Set event for showing input field.
         elements.mainContainer.off('click', listsView.renderNewInput);
         elements.mainContainer.on('click', listsView.renderNewInput);
+        elements.mainContainer.off('mouseover', listsView.hoverNewInput3);
+        elements.mainContainer.on('mouseover', listsView.hoverNewInput3);
 
     } else if (e.target.textContent === 'Sounds') {
         // Render sounds page.
@@ -144,6 +146,8 @@ const layerControl = (e) => {
         // Set event for showing input field.
         elements.mainContainer.off('click', listsView.renderNewInput);
         elements.mainContainer.on('click', listsView.renderNewInput);
+        elements.mainContainer.off('mouseover', listsView.hoverNewInput3);
+        elements.mainContainer.on('mouseover', listsView.hoverNewInput3);
 
     } else if (e.target.textContent === 'List name') {
         // Render new data from local storage.
@@ -304,9 +308,9 @@ function editListHandler(e) {
         listsView.renderNewInputForEdit(target);
 
         // Turn off the event to avoid event conflict.
-        $('#lists-list').off('keypress', '.listInput', addListHandler);
+        $('#lists-list').off('keypress', '.listEditInput', addListHandler);
         // Set the event of press enter key.
-        $('#lists-list').on('keypress', '.listInput', updateListHandler);
+        $('#lists-list').on('keypress', '.listEditInput', updateListHandler);
     }
 }
 
@@ -386,12 +390,19 @@ function changeToMemoHandler(e) {
     // Render new data from local storage.
     listsView.renderLocalStorageData3(e);
 
+    //TODO: Use layerNameHandler(e)
     // Styling layer name to bold & initial.
-    layerNameHandler(e);
+    // layerNameHandler(e);
+    // Bold layer name.
+    elements.layerNameSettings.css('font-weight', 'initial');
+    elements.layerNameLists.css('font-weight', 'initial');
+    elements.layerNameListName.css('font-weight', 'bold');
 
     // Set event for showing input field.
     elements.mainContainer.off('click', listsView.renderNewInput3);
     elements.mainContainer.on('click', listsView.renderNewInput3);
+    elements.mainContainer.off('mouseover', listsView.hoverNewInput3);
+    elements.mainContainer.on('mouseover', listsView.hoverNewInput3);
 
     // Set event again.
     setEventHandlers();
@@ -400,8 +411,10 @@ function changeToMemoHandler(e) {
 };
 
 const addMemoHandler3 = (e) => {
+    console.log('e.target.parentElement.previousElementSibling.className', e.target.parentElement.previousElementSibling.className);
+
     // Get parent id for addMemo(input, id) & setHammerJs4(id).
-    const parentID = e.target.parentElement.className;
+    const parentID = e.target.parentElement.previousElementSibling.className;
 
     if (e.keyCode === 13) {
         // Create new lists IF there in none yet
@@ -417,7 +430,7 @@ const addMemoHandler3 = (e) => {
         listsView.renderMemo3(memo);
 
         // Remove input field from UI.
-        $(e.target).remove();
+        $(e.target).parent().remove();
 
         // Set event again.
         setEventHandlers();
@@ -452,7 +465,7 @@ function editMemoHandler3(e) {
 
     // Check whether "input" field has already existed or not.
     // And remove current input & show hidden memo.
-    if ($('#memo-list').has('input').length > 0) {
+    if ($('#main-container').has('input').length > 0) {
         $('input').remove();
         $('.memo:hidden').show();
     }
@@ -473,9 +486,9 @@ function editMemoHandler3(e) {
         listsView.renderNewInputForEdit3(target);
 
         // Turn off the event to avoid event conflict.
-        $('#memo-list').off('keypress', '.memoInput', addMemoHandler3);
+        $('#main-container').off('keypress', '.memoInput', addMemoHandler3);
         // Set the event of press enter key.
-        $('#memo-list').on('keypress', '.memoInput', updateMemoHandler3);
+        $('#memo-list').on('keypress', '.memoEditInput', updateMemoHandler3);
     }
 };
 
@@ -506,9 +519,9 @@ function updateMemoHandler3(e) {
         setHammerJs4(parentID);
 
         // Turn off the event to avoid event conflict.
-        $('#memo-list').off('keypress', '.memoInput', updateMemoHandler3);
+        $('#memo-list').off('keypress', '.memoEditInput', updateMemoHandler3);
         // Set the event of press enter key.
-        $('#memo-list').on('keypress', '.memoInput', addMemoHandler3);
+        $('#main-container').on('keypress', '.memoInput', addMemoHandler3);
     }
 };
 

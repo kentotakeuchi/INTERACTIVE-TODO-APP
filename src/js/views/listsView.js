@@ -32,6 +32,7 @@ export const renderMyListsPage = () => {
                 <source src="./audio/click_3.mp3"type="audio/mpeg">
             </audio>
         </ul>
+        <li class="hover"></li>
     `;
     elements.mainContainer.append(markup);
 
@@ -40,11 +41,18 @@ export const renderMyListsPage = () => {
 };
 
 export const renderNewInput = (e) => {
+
+    $(`.hidden`).css('opacity', '0');
+
     if (e.target === $('#main-container')[0]) {
+        const theme = localStorage.getItem('theme');
+
         const markup = `
-            <input class="listInput" type="text">
+            <div class="inputContainer ${theme}">
+                <input class="listInput" type="text">
+            </div>
         `;
-        $('#lists-list').append(markup);
+        $('#lists-list').after(markup);
 
         // Change cursor + into default when there is new input.
         $(`#main-container`).removeClass('plus');
@@ -62,12 +70,13 @@ export const renderNewInputForEdit = (target) => {
     // MEMO: target.id -> insertAfter(markup) probably.
     const id = target.id;
     const markup = `
-        <input class="memoInput" type="text" value="${target.innerText}">
+        <input class="listEditInput" type="text" value="${target.innerText}">
     `;
     $(`#${id}`).after(markup);
 
     // Focus input field automatically when input shows.
-    $('.listInput').focus();
+    // Move cursor to end of input.
+    $('.listEditInput').focus().val(``).val(`${target.innerText}`);
 
     // Turn off render input & on remove input.
     $('#main-container').off('click', renderNewInput);
@@ -75,6 +84,7 @@ export const renderNewInputForEdit = (target) => {
 };
 
 export const renderList = memo => {
+
     const markup = `
         <li id="${memo.id}" class="memo ${memo.complete}">${memo.input}</li>
     `;
@@ -90,7 +100,11 @@ export const renderList = memo => {
 
 export const removeNewInput = (e) => {
     if (e.target === $('#main-container')[0]) {
-        $('.listInput:last-child').remove();
+        $(`.inputContainer`).addClass('removed-item');
+
+        setTimeout(() => {
+            $('.inputContainer').remove();
+        }, 200);
 
         // Change cursor default into + when new input is removed.
         $(`#main-container`).addClass('plus');
@@ -125,6 +139,8 @@ export const getInput = () => {
 
 export const deleteMemo = id => {
     const memo = $(`#${id}`);
+
+    $(`#${id}`).addClass('removeAnimation');
 
     if (memo) memo.remove();
 };
@@ -166,6 +182,8 @@ export const renderLocalStorageData3 = (e) => {
 };
 
 export const renderMemosPage3 = (id) => {
+    const theme = localStorage.getItem('theme');
+
     const markup = `
         <ul id="memo-list" class="${id}">
             <audio class="audio0">
@@ -181,6 +199,9 @@ export const renderMemosPage3 = (id) => {
                 <source src="./audio/click_3.mp3"type="audio/mpeg">
             </audio>
         </ul>
+        <div class="hoverContainer ${theme}">
+            <li class="hover"></li>
+        </div>
     `;
     elements.mainContainer.append(markup);
 
@@ -202,12 +223,42 @@ export const renderMemo3 = memo => {
     }
 };
 
+export const hoverNewInput3 = (e) => {
+    if (e.target.tagName === 'UI' ||
+        e.target.tagName === 'LI'
+        ) {
+        return;
+    }
+
+    // If there is no input, show trapezoid.
+    if (!$('#main-container').has('input').length > 0) {
+
+        $(`.hoverContainer`).addClass('hidden');
+        $(`.hoverContainer`).removeClass('hidden2');
+        $(`.hidden`).css('opacity', '1');
+    }
+
+    elements.mainContainer.off('mouseleave', removeHoverEvent);
+    elements.mainContainer.on('mouseleave', removeHoverEvent);
+};
+
+function removeHoverEvent() {
+    $(`.hoverContainer`).removeClass('hidden');
+    $(`.hoverContainer`).addClass('hidden2');
+}
+
 export const renderNewInput3 = (e) => {
+    $(`.hidden`).css('opacity', '0');
+
     if (e.target === $('#main-container')[0]) {
+        const theme = localStorage.getItem('theme');
+
         const markup = `
-            <input class="memoInput" type="text">
+            <div class="inputContainer ${theme}">
+                <input class="memoInput" type="text">
+            </div>
         `;
-        $('#memo-list').append(markup);
+        $('#memo-list').after(markup);
 
         // Change cursor + into default when there is new input.
         $(`#main-container`).removeClass('plus');
@@ -222,8 +273,13 @@ export const renderNewInput3 = (e) => {
 };
 
 export const removeNewInput3 = (e) => {
+
     if (e.target === $('#main-container')[0]) {
-        $('.memoInput:last-child').remove();
+        $(`.inputContainer`).addClass('removed-item');
+
+        setTimeout(() => {
+            $('.inputContainer').remove();
+        }, 200);
 
         // Change cursor default into + when new input is removed.
         $(`#main-container`).addClass('plus');
@@ -235,24 +291,25 @@ export const removeNewInput3 = (e) => {
 };
 
 export const renderNewInputForEdit3 = (target) => {
-    // MEMO: target.id -> insertAfter(markup) probably.
+
     const id = target.id;
     const markup = `
-        <input class="memoInput" type="text" value="${target.innerText}">
+        <input class="memoEditInput" type="text" value="${target.innerText}">
     `;
     $(`#${id}`).after(markup);
 
     // Focus input field automatically when input shows.
-    $('.listInput').focus();
+    // Move cursor to end of input.
+    $('.memoEditInput').focus().val(``).val(`${target.innerText}`);
 
     // Turn off render input & on remove input.
-    $('#main-container').off('click', renderNewInput);
-    $('#main-container').on('click', removeNewInputForEdit);
+    $('#main-container').off('click', renderNewInput3);
+    $('#main-container').on('click', removeNewInputForEdit3);
 };
 
 export const removeNewInputForEdit3 = (e) => {
     if (e.target === $('#main-container')[0]) {
-        $('#main-container').find('input').remove();
+        $('#main-container').find('.memoEditInput').remove();
 
         // Detect element which display is none & show it again.
         $('#main-container').find('li').each((index, el) => {
@@ -262,9 +319,9 @@ export const removeNewInputForEdit3 = (e) => {
         });
 
         // Turn off remove input & on render input.
-        $('#main-container').off('click', removeNewInputForEdit);
-        $('#main-container').off('click', renderNewInput);
-        $('#main-container').on('click', renderNewInput);
+        $('#main-container').off('click', removeNewInputForEdit3);
+        $('#main-container').off('click', renderNewInput3);
+        $('#main-container').on('click', renderNewInput3);
     }
 };
 
