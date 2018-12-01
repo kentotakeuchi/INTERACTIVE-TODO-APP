@@ -46,32 +46,33 @@ button:focus {
     background-color: black;
 }
 
-/* Hover New Input */
+
+/* hoverNewInput */
 .hidden.heat-map {
     /* Trapezoid */
-    border-top: 25px solid rgba(255, 196, 0, 0.768);
+    border-top: 25px solid rgba(255, 196, 0, 0.809);
     border-left: 25px solid transparent;
     border-right: 25px solid transparent;
     height: 0;
     width: 100%;
     opacity: 1;
-    animation: trapezoid-heatmap .5s;
+    animation: trapezoid-h .5s;
 }
 .hidden2.heat-map {
-    animation: trapezoid2-heatmap .5s;
+    animation: trapezoid-h2 .5s;
 }
 .hidden.graphite {
     /* Trapezoid */
-    border-top: 25px solid rgba(207, 206, 218, 0.809);
+    border-top: 25px solid rgba(207, 206, 218, 0.802);
     border-left: 25px solid transparent;
     border-right: 25px solid transparent;
     height: 0;
     width: 100%;
     opacity: 1;
-    animation: trapezoid-graphite .5s;
+    animation: trapezoid-g .5s;
 }
 .hidden2.graphite {
-    animation: trapezoid2-graphite .5s;
+    animation: trapezoid-g2 .5s;
 }
 .hidden.pretty-princes {
     /* Trapezoid */
@@ -81,26 +82,172 @@ button:focus {
     height: 0;
     width: 100%;
     opacity: 1;
-    animation: trapezoid-prettyprinces .5s;
+    animation: trapezoid-p .5s;
 }
 .hidden2.pretty-princes {
-    animation: trapezoid2-prettyprinces .5s;
+    animation: trapezoid-p2 .5s;
 }
 .hidden.lucky-clover {
     /* Trapezoid */
-    border-top: 25px solid rgba(220, 226, 100, 0.809);
+    border-top: 25px solid rgba(220, 226, 100, 0.802);
     border-left: 25px solid transparent;
     border-right: 25px solid transparent;
     height: 0;
     width: 100%;
     opacity: 1;
-    animation: trapezoid-luckyclover .5s;
+    animation: trapezoid-l .5s;
 }
 .hidden2.lucky-clover {
-    animation: trapezoid2-luckyclover .5s;
+    animation: trapezoid-l2 .5s;
 }
 
-/* Render New Input */
+@keyframes trapezoid-h {
+    0% {
+        border-top: 0 solid rgba(255, 196, 0, 0.809);
+        border-left: 0 solid transparent;
+        border-right: 0 solid transparent;
+        height: 0;
+        width: 100%;
+        opacity: 0;
+    }
+    100% {
+        border-top: 25px solid rgba(255, 196, 0, 0.809);
+        border-left: 25px solid transparent;
+        border-right: 25px solid transparent;
+        height: 0;
+        width: 100%;
+        opacity: 1;
+    }
+}
+@keyframes trapezoid-h2 {
+    0% {
+        border-top: 25px solid rgba(255, 196, 0, 0.809);
+        border-left: 25px solid transparent;
+        border-right: 25px solid transparent;
+        height: 0;
+        width: 100%;
+        opacity: 1;
+    }
+    100% {
+        border-top: 0 solid rgba(255, 196, 0, 0.809);
+        border-left: 0 solid transparent;
+        border-right: 0 solid transparent;
+        height: 0;
+        width: 100%;
+        opacity: 0;
+    }
+}
+@keyframes trapezoid-g {
+    0% {
+        border-top: 0 solid rgba(207, 206, 218, 0.802);
+        border-left: 0 solid transparent;
+        border-right: 0 solid transparent;
+        height: 0;
+        width: 100%;
+        opacity: 0;
+    }
+    100% {
+        border-top: 25px solid rgba(207, 206, 218, 0.802);
+        border-left: 25px solid transparent;
+        border-right: 25px solid transparent;
+        height: 0;
+        width: 100%;
+        opacity: 1;
+    }
+}
+@keyframes trapezoid-g2 {
+    0% {
+        border-top: 25px solid rgba(207, 206, 218, 0.802);
+        border-left: 25px solid transparent;
+        border-right: 25px solid transparent;
+        height: 0;
+        width: 100%;
+        opacity: 1;
+    }
+    100% {
+        border-top: 0 solid rgba(207, 206, 218, 0.802);
+        border-left: 0 solid transparent;
+        border-right: 0 solid transparent;
+        height: 0;
+        width: 100%;
+        opacity: 0;
+    }
+}
+@keyframes trapezoid-p {
+    0% {
+        border-top: 0 solid rgba(255, 194, 216, 0.809);
+        border-left: 0 solid transparent;
+        border-right: 0 solid transparent;
+        height: 0;
+        width: 100%;
+        opacity: 0;
+    }
+    100% {
+        border-top: 25px solid rgba(255, 194, 216, 0.809);
+        border-left: 25px solid transparent;
+        border-right: 25px solid transparent;
+        height: 0;
+        width: 100%;
+        opacity: 1;
+    }
+}
+@keyframes trapezoid-p2 {
+    0% {
+        border-top: 25px solid rgba(255, 194, 216, 0.809);
+        border-left: 25px solid transparent;
+        border-right: 25px solid transparent;
+        height: 0;
+        width: 100%;
+        opacity: 1;
+    }
+    100% {
+        border-top: 0 solid rgba(255, 194, 216, 0.809);
+        border-left: 0 solid transparent;
+        border-right: 0 solid transparent;
+        height: 0;
+        width: 100%;
+        opacity: 0;
+    }
+}
+@keyframes trapezoid-l {
+    0% {
+        border-top: 0 solid rgba(220, 226, 100, 0.802);
+        border-left: 0 solid transparent;
+        border-right: 0 solid transparent;
+        height: 0;
+        width: 100%;
+        opacity: 0;
+    }
+    100% {
+        border-top: 25px solid rgba(220, 226, 100, 0.802);
+        border-left: 25px solid transparent;
+        border-right: 25px solid transparent;
+        height: 0;
+        width: 100%;
+        opacity: 1;
+    }
+}
+@keyframes trapezoid-l2 {
+    0% {
+        border-top: 25px solid rgba(220, 226, 100, 0.802);
+        border-left: 25px solid transparent;
+        border-right: 25px solid transparent;
+        height: 0;
+        width: 100%;
+        opacity: 1;
+    }
+    100% {
+        border-top: 0 solid rgba(220, 226, 100, 0.802);
+        border-left: 0 solid transparent;
+        border-right: 0 solid transparent;
+        height: 0;
+        width: 100%;
+        opacity: 0;
+    }
+}
+
+
+/* Render & Remove New Input */
 input {
     background-color: transparent;
     border-style: none;
@@ -109,9 +256,28 @@ input {
     font-weight: 600;
 }
 .inputContainer {
-    padding: 10px 10px;
+    padding: 12px 12px;
     width: 100%;
     transition: all .2s ease-out;
+}
+.inputContainer.removed-item {
+    padding: 12px 0;
+    width: 0;
+}
+
+.memo {
+    padding: 12px 12px;
+    width: 100%;
+    transition: all .2s ease-out;
+}
+.memo.removed-item {
+    padding: 12px 0;
+    width: 0;
+}
+/* Style memo to darker when new input is displayed. */
+.memo.darker {
+    background-color: rgba(0, 0, 0, 0.51);
+    color: rgba(0, 0, 0, 0.503);
 }
 
 .inputContainer.heat-map {
@@ -127,11 +293,8 @@ input {
     background-color: rgb(220, 226, 100);
 }
 
-.inputContainer.removed-item {
-    padding: 10px 0;
-    width: 0;
-}
 
+/* RENDER NEW INPUT */
 .memoEditInput {
     padding: 20px 12px;
     background-color: transparent;
@@ -139,7 +302,6 @@ input {
     width: 100%;
     color: #444444;
     font-weight: 600;
-    border-bottom: .1px solid #afafaf;
 }
 .listEditInput {
     padding: 20px 12px;
@@ -148,8 +310,8 @@ input {
     width: 100%;
     color: #444444;
     font-weight: 600;
-    border-bottom: .1px solid #afafaf;
 }
+
 
 /* Themes */
 .heat-map > ul {
@@ -191,6 +353,7 @@ input {
     cursor: grabbing;
 }
 
+
 #settings-list, #sounds-list, #themes-list,
 #tips-list, #preferences-list, #lists-list,
 #memo-list {
@@ -202,6 +365,16 @@ input {
 #tips-list > li, #preferences-list > li, #lists-list > li,
 #memo-list > li {
     border-bottom: .1px solid #afafaf;
+}
+/* Style memo to darker when new input is displayed. */
+#settings-list > li.darker,
+#sounds-list > li.darker,
+#themes-list > li.darker,
+#tips-list > li.darker,
+#preferences-list > li.darker,
+#lists-list > li.darker,
+#memo-list > li.darker {
+    border-bottom: .1px solid rgba(0, 0, 0, 0.503);
 }
 
 /********************
@@ -268,6 +441,10 @@ input {
     flex: 0 5 100%;
 }
 
+.gesture {
+    padding: 30px;
+}
+
 .carousel-indicators li {
     border-radius: 50%;
     width: 20px !important;
@@ -275,7 +452,13 @@ input {
 }
 
 .carousel-indicators {
-    margin: 110px;
+    margin: 150px;
+}
+
+@media (min-width: 576px) {
+    .modal-sm {
+        max-width: 350px !important;
+    }
 }
 
 /********************
@@ -297,154 +480,5 @@ input {
 * layer 3
 *********************/
 
-/********************
-* Animation
-*********************/
 
-@keyframes trapezoid-heatmap {
-    0% {
-        border-top: 0 solid rgba(255, 196, 0, 0.768);
-        border-left: 0 solid transparent;
-        border-right: 0 solid transparent;
-        height: 0;
-        width: 100%;
-        opacity: 0;
-    }
-    100% {
-        border-top: 25px solid rgba(255, 196, 0, 0.768);
-        border-left: 25px solid transparent;
-        border-right: 25px solid transparent;
-        height: 0;
-        width: 100%;
-        opacity: 1;
-    }
-}
-@keyframes trapezoid2-heatmap {
-    0% {
-        border-top: 25px solid rgba(255, 196, 0, 0.768);
-        border-left: 25px solid transparent;
-        border-right: 25px solid transparent;
-        height: 0;
-        width: 100%;
-        opacity: 1;
-    }
-    100% {
-        border-top: 0 solid rgba(255, 196, 0, 0.768);
-        border-left: 0 solid transparent;
-        border-right: 0 solid transparent;
-        height: 0;
-        width: 100%;
-        opacity: 0;
-    }
-}
 
-@keyframes trapezoid-graphite {
-    0% {
-        border-top: 0 solid rgba(207, 206, 218, 0.809);
-        border-left: 0 solid transparent;
-        border-right: 0 solid transparent;
-        height: 0;
-        width: 100%;
-        opacity: 0;
-    }
-    100% {
-        border-top: 25px solid rgba(207, 206, 218, 0.809);
-        border-left: 25px solid transparent;
-        border-right: 25px solid transparent;
-        height: 0;
-        width: 100%;
-        opacity: 1;
-    }
-}
-@keyframes trapezoid2-graphite {
-    0% {
-        border-top: 25px solid rgba(207, 206, 218, 0.809);
-        border-left: 25px solid transparent;
-        border-right: 25px solid transparent;
-        height: 0;
-        width: 100%;
-        opacity: 1;
-    }
-    100% {
-        border-top: 0 solid rgba(207, 206, 218, 0.809);
-        border-left: 0 solid transparent;
-        border-right: 0 solid transparent;
-        height: 0;
-        width: 100%;
-        opacity: 0;
-    }
-}
-
-@keyframes trapezoid-prettyprinces {
-    0% {
-        border-top: 0 solid rgba(255, 194, 216, 0.809);
-        border-left: 0 solid transparent;
-        border-right: 0 solid transparent;
-        height: 0;
-        width: 100%;
-        opacity: 0;
-    }
-    100% {
-        border-top: 25px solid rgba(255, 194, 216, 0.809);
-        border-left: 25px solid transparent;
-        border-right: 25px solid transparent;
-        height: 0;
-        width: 100%;
-        opacity: 1;
-    }
-}
-@keyframes trapezoid2-prettyprinces {
-    0% {
-        border-top: 25px solid rgba(255, 194, 216, 0.809);
-        border-left: 25px solid transparent;
-        border-right: 25px solid transparent;
-        height: 0;
-        width: 100%;
-        opacity: 1;
-    }
-    100% {
-        border-top: 0 solid rgba(255, 194, 216, 0.809);
-        border-left: 0 solid transparent;
-        border-right: 0 solid transparent;
-        height: 0;
-        width: 100%;
-        opacity: 0;
-    }
-}
-
-@keyframes trapezoid-luckyclover {
-    0% {
-        border-top: 0 solid rgba(220, 226, 100, 0.809);
-        border-left: 0 solid transparent;
-        border-right: 0 solid transparent;
-        height: 0;
-        width: 100%;
-        opacity: 0;
-    }
-    100% {
-        border-top: 25px solid rgba(220, 226, 100, 0.809);
-        border-left: 25px solid transparent;
-        border-right: 25px solid transparent;
-        height: 0;
-        width: 100%;
-        opacity: 1;
-    }
-}
-@keyframes trapezoid2-luckyclover {
-    0% {
-        border-top: 25px solid rgba(220, 226, 100, 0.809);
-        border-left: 25px solid transparent;
-        border-right: 25px solid transparent;
-        height: 0;
-        width: 100%;
-        opacity: 1;
-    }
-    100% {
-        border-top: 0 solid rgba(220, 226, 100, 0.809);
-        border-left: 0 solid transparent;
-        border-right: 0 solid transparent;
-        height: 0;
-        width: 100%;
-        opacity: 0;
-    }
-}

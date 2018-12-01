@@ -57,10 +57,3 @@ export const layerNameHandler = (e) => {
     }
 };
 
-export const displayModalHandler = () => {
-    $(`#tutorialModal`).modal('toggle');
-};
-
-export const tutorialCarouselHandler = () => {
-    $('.modal-body').carousel('next');
-};

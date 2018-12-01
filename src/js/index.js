@@ -4,7 +4,7 @@ import * as Hammer from 'hammerjs';
 import Lists from './models/Lists';
 import * as settingsView from './views/settingsView';
 import * as listsView from './views/listsView';
-import { elements, clearPrevPage, layerNameHandler, displayModalHandler, tutorialCarouselHandler } from './views/base';
+import { elements, clearPrevPage, layerNameHandler } from './views/base';
 
 const state = {};
 
@@ -40,8 +40,8 @@ function setEventHandlers() {
     $('.preferences').on('click', settingsControl);
 
     // List page.
-    $('#lists-list').off('keypress', '.listInput', addListHandler);
-    $('#lists-list').on('keypress', '.listInput', addListHandler);
+    $('#main-container').off('keypress', '.listInput', addListHandler);
+    $('#main-container').on('keypress', '.listInput', addListHandler);
 
     // Memos page.
     $('#main-container').off('keypress', '.memoInput', addMemoHandler3);
@@ -52,6 +52,9 @@ function setEventHandlers() {
     $('li').on('click', settingsView.playSound);
     // TODO: search for better rollover sound.
     // $('li').on('mouseenter', settingsView.playHoverSound);
+
+    elements.mainContainer.off('mouseover', listsView.hoverNewInput3);
+    elements.mainContainer.on('mouseover', listsView.hoverNewInput3);
 };
 
 
@@ -72,8 +75,6 @@ const settingsControl = (e) => {
         // Set event for showing input field.
         elements.mainContainer.off('click', listsView.renderNewInput);
         elements.mainContainer.on('click', listsView.renderNewInput);
-        elements.mainContainer.off('mouseover', listsView.hoverNewInput3);
-        elements.mainContainer.on('mouseover', listsView.hoverNewInput3);
 
     } else if (e.target.textContent === 'Sounds') {
         // Render sounds page.
@@ -104,8 +105,10 @@ const settingsControl = (e) => {
         setHammerJs2(e);
 
         // Set display tutorial modal handler when user click 'Welcome Tutorial'.
-        $(`.tutorial`).off('click', displayModalHandler);
-        $(`.tutorial`).on('click', displayModalHandler);
+        $(`#tips-list > li`).off('click', settingsView.displayModalHandler);
+        $(`#tips-list > li`).on('click', settingsView.displayModalHandler);
+        $(`#tips-list > li`).off('click', settingsView.displayModalHandler);
+        $(`#tips-list > li`).on('click', settingsView.displayModalHandler);
 
         // Set carousel event when user tap 'modal body'.
         setHammerJs3();
@@ -239,7 +242,8 @@ function prevPageHandler3(e) {
  **********/
 
 const addListHandler = (e) => {
-    if (e.keyCode === 13) {
+
+    if (e.keyCode === 13 && e.target.value !== '') {
         // Create new lists IF there in none yet
         if (!state.lists) state.lists = new Lists();
 
@@ -253,7 +257,7 @@ const addListHandler = (e) => {
         listsView.renderList(memo);
 
         // Remove input field from UI.
-        $(e.target).remove();
+        $(e.target).parent().remove();
 
         // Set event again.
         setEventHandlers();
@@ -264,6 +268,7 @@ const addListHandler = (e) => {
 
 
 function removeListHandler(e) {
+
     e.preventDefault();
 
     if (e.type === 'quadrupletap') {
@@ -283,6 +288,7 @@ function removeListHandler(e) {
 
 
 function editListHandler(e) {
+
     e.preventDefault();
 
     // Check whether "input" field has already existed or not.
@@ -317,7 +323,9 @@ function editListHandler(e) {
 
 // Update memo when user presses enter key.
 function updateListHandler(e) {
-    if (e.keyCode === 13) {
+    console.log('e', e);
+
+    if (e.keyCode === 13 && e.target.value !== '') {
         const id = e.target.previousElementSibling.id;
 
         // Get updated input value.
@@ -339,8 +347,10 @@ function updateListHandler(e) {
         $('#lists-list').off('keypress', '.listInput', updateListHandler);
         // Set the event of press enter key.
         $('#lists-list').on('keypress', '.listInput', addListHandler);
+        // elements.mainContainer.off('mouseover', listsView.hoverNewInput3);
+        // elements.mainContainer.on('mouseover', listsView.hoverNewInput3);
     }
-}
+};
 
 
 // Completed memo handler when user triple taps a memo.
@@ -401,8 +411,6 @@ function changeToMemoHandler(e) {
     // Set event for showing input field.
     elements.mainContainer.off('click', listsView.renderNewInput3);
     elements.mainContainer.on('click', listsView.renderNewInput3);
-    elements.mainContainer.off('mouseover', listsView.hoverNewInput3);
-    elements.mainContainer.on('mouseover', listsView.hoverNewInput3);
 
     // Set event again.
     setEventHandlers();
@@ -411,12 +419,11 @@ function changeToMemoHandler(e) {
 };
 
 const addMemoHandler3 = (e) => {
-    console.log('e.target.parentElement.previousElementSibling.className', e.target.parentElement.previousElementSibling.className);
 
     // Get parent id for addMemo(input, id) & setHammerJs4(id).
     const parentID = e.target.parentElement.previousElementSibling.className;
 
-    if (e.keyCode === 13) {
+    if (e.keyCode === 13 && e.target.value !== '') {
         // Create new lists IF there in none yet
         if (!state.lists) state.lists = new Lists();
 
@@ -459,7 +466,6 @@ function removeMemoHandler3(e) {
     }
 };
 
-// NEXT TASK!!! -> EDIT -> UPDATE -> COMPLETE
 function editMemoHandler3(e) {
     e.preventDefault();
 
@@ -471,6 +477,8 @@ function editMemoHandler3(e) {
     }
 
     if (e.type === 'doubletap') {
+        console.log('e.target.id', e.target.id);
+        
         const target = e.target;
 
         // Create new lists IF there in none yet
@@ -497,7 +505,7 @@ function editMemoHandler3(e) {
 function updateMemoHandler3(e) {
     console.log('e', e);
 
-    if (e.keyCode === 13) {
+    if (e.keyCode === 13 && e.target.value !== '') {
         // Get parent id for updateMemo3(id, newInput, parentID) & setHammerJs4(parentID).
         const parentID = e.target.parentElement.className;
         // Get id of hidden memo.
@@ -749,8 +757,8 @@ function setHammerJs3() {
 
     tutorial.add(singleTap);
 
-    tutorial.off('singletap', tutorialCarouselHandler);
-    tutorial.on('singletap', tutorialCarouselHandler);
+    tutorial.off('singletap', settingsView.tutorialCarouselHandler);
+    tutorial.on('singletap', settingsView.tutorialCarouselHandler);
 };
 
 

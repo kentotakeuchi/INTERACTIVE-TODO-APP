@@ -2,7 +2,7 @@ import $ from 'jquery';
 import { elements } from './base';
 
 /**********************
- * Change page
+ * CHANGE PAGE
  **********************/
 export const renderSettingsPage = () => {
     const markup = `
@@ -95,8 +95,11 @@ export const renderTipsPage = () => {
                 <source src="./audio/click_4.mp3" type="audio/mpeg">
             </audio>
             <li class="tutorial">Welcome Tutorial</li>
-            <li class="">Click to Add Items</li>
-            <li class="">Insert between Items</li>
+            <li class="addTip">Click to Add Items</li>
+            <li class="renameTip">Rename a List or Item</li>
+            <li class="compTip">Complete a List or Item</li>
+            <li class="deleteTip">Delete a List or Item</li>
+            <li class="prevTip">Up One Level</li>
         </ul>
     `;
     elements.mainContainer.append(markup);
@@ -126,7 +129,7 @@ export const renderPreferencesPage = () => {
 };
 
 /**********************
- * Change sound
+ * CHANGE SOUND
  **********************/
 
 export const changeSounds = (e) => {
@@ -209,7 +212,7 @@ export const playHoverSound = () => {
 };
 
 /**********************
- * Change color
+ * CHANGE COLOR
  **********************/
 export const changeThemes = (e) => {
     const color = e.target.innerText;
@@ -235,3 +238,32 @@ export const currentThemeHandler = () => {
         $(`#main-container`).removeAttr('class').addClass(curColor);
     }
 };
+
+/**********************
+ * DISPLAY MODAL
+ **********************/
+
+// Tutorial modal.
+export const displayModalHandler = (e) => {
+    console.log('e', e);
+    const target = e.target.className;
+
+    if (target === 'tutorial') {
+        $(`#tutorialModal`).modal('toggle');
+    } else if (target === 'addTip') {
+        $(`#addTipModal`).modal('toggle');
+    } else if (target === 'renameTip') {
+        $(`#renameTipModal`).modal('toggle');
+    } else if (target === 'compTip') {
+        $(`#compTipModal`).modal('toggle');
+    } else if (target === 'deleteTip') {
+        $(`#deleteTipModal`).modal('toggle');
+    } else if (target === 'prevTip') {
+        $(`#prevTipModal`).modal('toggle');
+    }
+};
+
+export const tutorialCarouselHandler = () => {
+    $('.modal-body').carousel('next');
+};
+

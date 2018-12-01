@@ -40,6 +40,24 @@ export const renderMyListsPage = () => {
     $(`#main-container`).addClass('plus');
 };
 
+export const renderList = memo => {
+
+    const markup = `
+        <li id="${memo.id}" class="memo ${memo.complete}">${memo.input}</li>
+    `;
+
+    // Check if or not there is class="complete".
+    if ($('#lists-list').has('.complete').length > 0) {
+        // Insert markup before the first memo with complete class.
+        $('.complete').first().before(markup);
+    } else {
+        $('#lists-list').append(markup);
+    }
+
+    // Style memo to original color when new input is gone.
+    $(`.memo`).removeClass(`darker`);
+};
+
 export const renderNewInput = (e) => {
 
     $(`.hidden`).css('opacity', '0');
@@ -54,6 +72,9 @@ export const renderNewInput = (e) => {
         `;
         $('#lists-list').after(markup);
 
+        // Style memo to darker when new input is displayed.
+        $(`#lists-list > li, .memo`).addClass(`darker`);
+
         // Change cursor + into default when there is new input.
         $(`#main-container`).removeClass('plus');
 
@@ -66,38 +87,6 @@ export const renderNewInput = (e) => {
     }
 };
 
-export const renderNewInputForEdit = (target) => {
-    // MEMO: target.id -> insertAfter(markup) probably.
-    const id = target.id;
-    const markup = `
-        <input class="listEditInput" type="text" value="${target.innerText}">
-    `;
-    $(`#${id}`).after(markup);
-
-    // Focus input field automatically when input shows.
-    // Move cursor to end of input.
-    $('.listEditInput').focus().val(``).val(`${target.innerText}`);
-
-    // Turn off render input & on remove input.
-    $('#main-container').off('click', renderNewInput);
-    $('#main-container').on('click', removeNewInputForEdit);
-};
-
-export const renderList = memo => {
-
-    const markup = `
-        <li id="${memo.id}" class="memo ${memo.complete}">${memo.input}</li>
-    `;
-
-    // Check if or not there is class="complete".
-    if ($('#lists-list').has('.complete').length > 0) {
-        // Insert markup before the first memo with complete class.
-        $('.complete').first().before(markup);
-    } else {
-        $('#lists-list').append(markup);
-    }
-};
-
 export const removeNewInput = (e) => {
     if (e.target === $('#main-container')[0]) {
         $(`.inputContainer`).addClass('removed-item');
@@ -105,6 +94,9 @@ export const removeNewInput = (e) => {
         setTimeout(() => {
             $('.inputContainer').remove();
         }, 200);
+
+        // Style memo to original color when new input is gone.
+        $(`.memo`).removeClass(`darker`);
 
         // Change cursor default into + when new input is removed.
         $(`#main-container`).addClass('plus');
@@ -115,9 +107,32 @@ export const removeNewInput = (e) => {
     }
 };
 
+export const renderNewInputForEdit = (target) => {
+    // MEMO: target.id -> insertAfter(markup) probably.
+    const id = target.id;
+    const markup = `
+        <input class="listEditInput" type="text" value="${target.innerText}">
+    `;
+    $(`#${id}`).after(markup);
+
+    // Style memo to darker when edit input is displayed.
+    $(`#lists-list > li, .memo`).addClass(`darker`);
+
+    // Focus input field automatically when input shows.
+    // Move cursor to end of input.
+    $('.listEditInput').focus().val(``).val(`${target.innerText}`);
+
+    // Turn off render input & on remove input.
+    $('#main-container').off('click', renderNewInput);
+    $('#main-container').on('click', removeNewInputForEdit);
+};
+
 export const removeNewInputForEdit = (e) => {
     if (e.target === $('#main-container')[0]) {
         $('#main-container').find('input').remove();
+
+        // Style memo to original color when edit input is gone.
+        $(`.memo`).removeClass(`darker`);
 
         // Detect element which display is none & show it again.
         $('#main-container').find('li').each((index, el) => {
@@ -140,9 +155,11 @@ export const getInput = () => {
 export const deleteMemo = id => {
     const memo = $(`#${id}`);
 
-    $(`#${id}`).addClass('removeAnimation');
+    $(`#${id}`).addClass('removed-item');
 
-    if (memo) memo.remove();
+    setTimeout(() => {
+        if (memo) memo.remove();
+    }, 300);
 };
 
 
@@ -182,8 +199,6 @@ export const renderLocalStorageData3 = (e) => {
 };
 
 export const renderMemosPage3 = (id) => {
-    const theme = localStorage.getItem('theme');
-
     const markup = `
         <ul id="memo-list" class="${id}">
             <audio class="audio0">
@@ -199,9 +214,7 @@ export const renderMemosPage3 = (id) => {
                 <source src="./audio/click_3.mp3"type="audio/mpeg">
             </audio>
         </ul>
-        <div class="hoverContainer ${theme}">
-            <li class="hover"></li>
-        </div>
+        <li class="hover"></li>
     `;
     elements.mainContainer.append(markup);
 
@@ -221,9 +234,13 @@ export const renderMemo3 = memo => {
     } else {
         $('#memo-list').append(markup);
     }
+
+    // Style memo to original color when new input is gone.
+    $(`.memo`).removeClass(`darker`);
 };
 
 export const hoverNewInput3 = (e) => {
+
     if (e.target.tagName === 'UI' ||
         e.target.tagName === 'LI'
         ) {
@@ -231,10 +248,10 @@ export const hoverNewInput3 = (e) => {
     }
 
     // If there is no input, show trapezoid.
+    const theme = localStorage.getItem('theme');
     if (!$('#main-container').has('input').length > 0) {
-
-        $(`.hoverContainer`).addClass('hidden');
-        $(`.hoverContainer`).removeClass('hidden2');
+        $(`.hover`).addClass(`hidden ${theme}`);
+        $(`.hover`).removeClass('hidden2');
         $(`.hidden`).css('opacity', '1');
     }
 
@@ -243,9 +260,10 @@ export const hoverNewInput3 = (e) => {
 };
 
 function removeHoverEvent() {
-    $(`.hoverContainer`).removeClass('hidden');
-    $(`.hoverContainer`).addClass('hidden2');
-}
+    $(`.hover`).removeClass(`hidden`);
+    $(`.hover`).addClass('hidden2');
+};
+
 
 export const renderNewInput3 = (e) => {
     $(`.hidden`).css('opacity', '0');
@@ -259,6 +277,9 @@ export const renderNewInput3 = (e) => {
             </div>
         `;
         $('#memo-list').after(markup);
+
+        // Style memo to darker when new input is displayed.
+        $(`#memo-list > li, .memo`).addClass(`darker`);
 
         // Change cursor + into default when there is new input.
         $(`#main-container`).removeClass('plus');
@@ -281,6 +302,9 @@ export const removeNewInput3 = (e) => {
             $('.inputContainer').remove();
         }, 200);
 
+        // Style memo to original color when new input is gone.
+        $(`.memo`).removeClass(`darker`);
+
         // Change cursor default into + when new input is removed.
         $(`#main-container`).addClass('plus');
 
@@ -291,12 +315,17 @@ export const removeNewInput3 = (e) => {
 };
 
 export const renderNewInputForEdit3 = (target) => {
+    console.log('edit3');
+    
 
     const id = target.id;
     const markup = `
         <input class="memoEditInput" type="text" value="${target.innerText}">
     `;
     $(`#${id}`).after(markup);
+
+    // Style memo to darker when edit input is displayed.
+    $(`#memo-list > li, .memo`).addClass(`darker`);
 
     // Focus input field automatically when input shows.
     // Move cursor to end of input.
@@ -310,6 +339,9 @@ export const renderNewInputForEdit3 = (target) => {
 export const removeNewInputForEdit3 = (e) => {
     if (e.target === $('#main-container')[0]) {
         $('#main-container').find('.memoEditInput').remove();
+
+        // Style memo to original color when edit input is gone.
+        $(`.memo`).removeClass(`darker`);
 
         // Detect element which display is none & show it again.
         $('#main-container').find('li').each((index, el) => {
