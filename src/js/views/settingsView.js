@@ -195,10 +195,8 @@ export const playSound = () => {
 };
 
 export const playHoverSound = () => {
-    console.log('playHoverSound');
 
     const audioPlay = $(`.audio0`)[0].play();
-    console.log('audioPlay', audioPlay);
 
     if (audioPlay !== undefined) {
         audioPlay.then(() => {

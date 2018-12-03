@@ -2,6 +2,7 @@ import $ from 'jquery';
 import { elements } from './base';
 
 export const renderLocalStorageData = () => {
+
     // show update list on UI
     const MemosOfLocalStorage = JSON.parse(localStorage.getItem('lists'));
 
@@ -17,6 +18,7 @@ export const renderLocalStorageData = () => {
 };
 
 export const renderMyListsPage = () => {
+
     const markup = `
         <ul id="lists-list">
             <audio class="audio0">
@@ -60,6 +62,8 @@ export const renderList = memo => {
 
 export const renderNewInput = (e) => {
 
+    console.log('render2');
+
     $(`.hidden`).css('opacity', '0');
 
     if (e.target === $('#main-container')[0]) {
@@ -80,6 +84,7 @@ export const renderNewInput = (e) => {
 
         // Turn off render input & on remove input.
         $('#main-container').off('click', renderNewInput);
+        $('#main-container').off('click', renderNewInput3);
         $('#main-container').on('click', removeNewInput);
 
         // Focus input field automatically when input shows.
@@ -88,6 +93,7 @@ export const renderNewInput = (e) => {
 };
 
 export const removeNewInput = (e) => {
+
     if (e.target === $('#main-container')[0]) {
         $(`.inputContainer`).addClass('removed-item');
 
@@ -108,7 +114,7 @@ export const removeNewInput = (e) => {
 };
 
 export const renderNewInputForEdit = (target) => {
-    // MEMO: target.id -> insertAfter(markup) probably.
+
     const id = target.id;
     const markup = `
         <input class="listEditInput" type="text" value="${target.innerText}">
@@ -124,6 +130,7 @@ export const renderNewInputForEdit = (target) => {
 
     // Turn off render input & on remove input.
     $('#main-container').off('click', renderNewInput);
+    $('#main-container').off('click', renderNewInput3);
     $('#main-container').on('click', removeNewInputForEdit);
 };
 
@@ -153,6 +160,7 @@ export const getInput = () => {
 };
 
 export const deleteMemo = id => {
+
     const memo = $(`#${id}`);
 
     $(`#${id}`).addClass('removed-item');
@@ -168,8 +176,6 @@ export const deleteMemo = id => {
  **********/
 
 export const renderLocalStorageData3 = (e) => {
-    console.log('e', e);
-    console.log('e.target', e.target);
 
     let id;
     if (e.target.parentElement.id === 'memo-list') {
@@ -179,8 +185,6 @@ export const renderLocalStorageData3 = (e) => {
         // If the event comes from 'changeToMemoHandler(e)'.
         id = e.target.id;
     }
-    console.log('id', id);
-
 
     // show update list on UI
     const MemosOfLocalStorage = JSON.parse(localStorage.getItem('lists'));
@@ -199,6 +203,7 @@ export const renderLocalStorageData3 = (e) => {
 };
 
 export const renderMemosPage3 = (id) => {
+
     const markup = `
         <ul id="memo-list" class="${id}">
             <audio class="audio0">
@@ -223,6 +228,7 @@ export const renderMemosPage3 = (id) => {
 };
 
 export const renderMemo3 = memo => {
+
     const markup = `
         <li id="${memo.id}" class="memo ${memo.complete}">${memo.input}</li>
     `;
@@ -266,6 +272,9 @@ function removeHoverEvent() {
 
 
 export const renderNewInput3 = (e) => {
+
+    console.log('render3');
+
     $(`.hidden`).css('opacity', '0');
 
     if (e.target === $('#main-container')[0]) {
@@ -285,6 +294,7 @@ export const renderNewInput3 = (e) => {
         $(`#main-container`).removeClass('plus');
 
         // Turn off render input & on remove input.
+        $('#main-container').off('click', renderNewInput);
         $('#main-container').off('click', renderNewInput3);
         $('#main-container').on('click', removeNewInput3);
 
@@ -315,8 +325,6 @@ export const removeNewInput3 = (e) => {
 };
 
 export const renderNewInputForEdit3 = (target) => {
-    console.log('edit3');
-    
 
     const id = target.id;
     const markup = `
@@ -332,6 +340,7 @@ export const renderNewInputForEdit3 = (target) => {
     $('.memoEditInput').focus().val(``).val(`${target.innerText}`);
 
     // Turn off render input & on remove input.
+    $('#main-container').off('click', renderNewInput);
     $('#main-container').off('click', renderNewInput3);
     $('#main-container').on('click', removeNewInputForEdit3);
 };

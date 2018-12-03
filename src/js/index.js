@@ -9,6 +9,7 @@ import { elements, clearPrevPage, layerNameHandler } from './views/base';
 const state = {};
 
 $('document').ready(() => {
+
     // Get theme user previously set.
     settingsView.currentThemeHandler();
 
@@ -17,6 +18,7 @@ $('document').ready(() => {
 });
 
 function setEventHandlers() {
+
     // Layer list
     elements.layerNameSettings.off('click', layerControl);
     elements.layerNameSettings.on('click', layerControl);
@@ -55,14 +57,22 @@ function setEventHandlers() {
 
     elements.mainContainer.off('mouseover', listsView.hoverNewInput3);
     elements.mainContainer.on('mouseover', listsView.hoverNewInput3);
+
+    elements.mainContainer.off('click', listsView.renderNewInput);
+    elements.mainContainer.on('click', listsView.renderNewInput);
+
+    elements.mainContainer.off('click', listsView.renderNewInput3);
+    elements.mainContainer.on('click', listsView.renderNewInput3);
 };
 
 
 const settingsControl = (e) => {
+
     // Prepare UI for each setting page.
     clearPrevPage();
 
     if (e.target.textContent === 'My Lists') {
+
         // Render new data from local storage.
         listsView.renderLocalStorageData();
 
@@ -72,11 +82,8 @@ const settingsControl = (e) => {
         // Styling layer name to bold & initial.
         layerNameHandler(e);
 
-        // Set event for showing input field.
-        elements.mainContainer.off('click', listsView.renderNewInput);
-        elements.mainContainer.on('click', listsView.renderNewInput);
-
     } else if (e.target.textContent === 'Sounds') {
+
         // Render sounds page.
         settingsView.renderSoundsPage();
 
@@ -87,6 +94,7 @@ const settingsControl = (e) => {
         $('.clear, .sci-fi, .8bit').on('click', settingsView.changeSounds);
 
     } else if (e.target.textContent === 'Themes') {
+
         // Render themes page.
         settingsView.renderThemesPage();
 
@@ -98,6 +106,7 @@ const settingsControl = (e) => {
         $('li').on('click', settingsView.changeThemes);
 
     } else if (e.target.textContent === 'Tips & Tricks') {
+
         // Render tips&tricks page.
         settingsView.renderTipsPage();
 
@@ -114,6 +123,7 @@ const settingsControl = (e) => {
         setHammerJs3();
 
     } else if (e.target.textContent === 'Preferences') {
+
         // Render preferences page.
         settingsView.renderPreferencesPage();
 
@@ -126,10 +136,12 @@ const settingsControl = (e) => {
 
 
 const layerControl = (e) => {
+
     // Prepare UI for each layer page.
     clearPrevPage();
 
     if (e.target.textContent === 'Settings') {
+
         // Render settings page.
         settingsView.renderSettingsPage();
 
@@ -137,6 +149,7 @@ const layerControl = (e) => {
         layerNameHandler(e);
 
     } else if (e.target.textContent === 'Lists') {
+
         // Render new data from local storage.
         listsView.renderLocalStorageData();
 
@@ -146,13 +159,8 @@ const layerControl = (e) => {
         // Styling layer name to bold & initial.
         layerNameHandler(e);
 
-        // Set event for showing input field.
-        elements.mainContainer.off('click', listsView.renderNewInput);
-        elements.mainContainer.on('click', listsView.renderNewInput);
-        elements.mainContainer.off('mouseover', listsView.hoverNewInput3);
-        elements.mainContainer.on('mouseover', listsView.hoverNewInput3);
-
     } else if (e.target.textContent === 'List name') {
+
         // Render new data from local storage.
         listsView.renderLocalStorageData3();
 
@@ -161,11 +169,8 @@ const layerControl = (e) => {
         // Styling layer name to bold & initial.
         layerNameHandler(e);
 
-        // Set event for showing input field.
-        elements.mainContainer.off('click', listsView.renderNewInput);
-        elements.mainContainer.on('click', listsView.renderNewInput);
-
     } else if (e.target.textContent === 'Tutorial') {
+
         // Set carousel event when user tap 'modal body'.
         setHammerJs3();
 
@@ -184,8 +189,10 @@ const layerControl = (e) => {
     setEventHandlers();
 };
 
+
 // Lists -> Settings
 function prevPageHandler(e) {
+
     // Prepare for rendering prev page.
     clearPrevPage();
 
@@ -202,8 +209,8 @@ function prevPageHandler(e) {
 
 // Sounds, Themes, Tips, Preferences -> Settings
 function prevPageHandler2(e) {
+
     const id = e.target.id;
-    console.log('id', id);
 
     // Prepare for rendering prev page.
     clearPrevPage();
@@ -221,6 +228,7 @@ function prevPageHandler2(e) {
 
 // Layer3 -> Layer2
 function prevPageHandler3(e) {
+
     // Prepare for rendering prev page.
     clearPrevPage();
 
@@ -235,7 +243,7 @@ function prevPageHandler3(e) {
     setEventHandlers();
     // Set HAMMER.JS event.
     setHammerJs();
-}
+};
 
 /*******************
  * Layer 2
@@ -244,6 +252,7 @@ function prevPageHandler3(e) {
 const addListHandler = (e) => {
 
     if (e.keyCode === 13 && e.target.value !== '') {
+
         // Create new lists IF there in none yet
         if (!state.lists) state.lists = new Lists();
 
@@ -323,7 +332,6 @@ function editListHandler(e) {
 
 // Update memo when user presses enter key.
 function updateListHandler(e) {
-    console.log('e', e);
 
     if (e.keyCode === 13 && e.target.value !== '') {
         const id = e.target.previousElementSibling.id;
@@ -347,14 +355,13 @@ function updateListHandler(e) {
         $('#lists-list').off('keypress', '.listInput', updateListHandler);
         // Set the event of press enter key.
         $('#lists-list').on('keypress', '.listInput', addListHandler);
-        // elements.mainContainer.off('mouseover', listsView.hoverNewInput3);
-        // elements.mainContainer.on('mouseover', listsView.hoverNewInput3);
     }
 };
 
 
 // Completed memo handler when user triple taps a memo.
 function completeListHandler(e) {
+
     const id = e.target.id;
 
     if ($(`#${id}`).hasClass('complete')) return;
@@ -391,6 +398,7 @@ function completeListHandler(e) {
 
  // Layer2 -> Layer3
 function changeToMemoHandler(e) {
+
     // Get id for setHammerJs4(id).
     const id = e.target.id;
 
@@ -407,10 +415,6 @@ function changeToMemoHandler(e) {
     elements.layerNameSettings.css('font-weight', 'initial');
     elements.layerNameLists.css('font-weight', 'initial');
     elements.layerNameListName.css('font-weight', 'bold');
-
-    // Set event for showing input field.
-    elements.mainContainer.off('click', listsView.renderNewInput3);
-    elements.mainContainer.on('click', listsView.renderNewInput3);
 
     // Set event again.
     setEventHandlers();
@@ -447,6 +451,7 @@ const addMemoHandler3 = (e) => {
 };
 
 function removeMemoHandler3(e) {
+
     e.preventDefault();
     // Get parent id for deleteMemo(id, parentID).
     const parentID = e.target.parentElement.className;
@@ -467,6 +472,7 @@ function removeMemoHandler3(e) {
 };
 
 function editMemoHandler3(e) {
+
     e.preventDefault();
 
     // Check whether "input" field has already existed or not.
@@ -477,8 +483,7 @@ function editMemoHandler3(e) {
     }
 
     if (e.type === 'doubletap') {
-        console.log('e.target.id', e.target.id);
-        
+
         const target = e.target;
 
         // Create new lists IF there in none yet
@@ -503,9 +508,9 @@ function editMemoHandler3(e) {
 
 // Update memo when user presses enter key.
 function updateMemoHandler3(e) {
-    console.log('e', e);
 
     if (e.keyCode === 13 && e.target.value !== '') {
+
         // Get parent id for updateMemo3(id, newInput, parentID) & setHammerJs4(parentID).
         const parentID = e.target.parentElement.className;
         // Get id of hidden memo.
@@ -535,6 +540,7 @@ function updateMemoHandler3(e) {
 
 // Completed memo handler when user triple taps a memo.
 function completeMemoHandler3(e) {
+
     // Get parent id for setHammerJs4(parentID).
     const parentID = e.target.parentElement.className;
     const id = e.target.id;
@@ -542,6 +548,7 @@ function completeMemoHandler3(e) {
     if ($(`#${id}`).hasClass('complete')) return;
 
     if (e.type === 'tripletap') {
+
         // Prepare UI for each layer page.
         clearPrevPage();
 
@@ -574,6 +581,7 @@ function completeMemoHandler3(e) {
 // TODO: Seperate this function from index.js.
 // Hammer.js event handler for "Layer2".
 function setHammerJs() {
+
     const MemosOfLocalStorage = JSON.parse(localStorage.getItem('lists'));
 
     let memos = [];
@@ -638,16 +646,17 @@ function setHammerJs() {
 
 // Hammer.js event handler for "Layer3".
 function setHammerJs4(parentID) {
+
     const MemosOfLocalStorage = JSON.parse(localStorage.getItem('lists'));
     const index = MemosOfLocalStorage.findIndex(el => el.id === parentID);
 
     let memos = [];
     if (MemosOfLocalStorage[index].memos) {
+
         MemosOfLocalStorage[index].memos.forEach(el => {
             let els = document.getElementById(`${el.id}`);
             memos.push(els);
         });
-        console.log('memos', memos);
 
         // create a manager for that element
         let mc = [];
@@ -700,10 +709,11 @@ function setHammerJs4(parentID) {
             el.on('panup', prevPageHandler3);
         });
     }
-}
+};
 
 // Hammer.js event handler for "Settings layer".
 function setHammerJs2(e) {
+
     const text = e.target.innerText;
 
     const panUp = new Hammer.Pan({
@@ -749,6 +759,7 @@ function setHammerJs2(e) {
 
 // Hammer.js event handler for "Tutorial".
 function setHammerJs3() {
+
     const singleTap = new Hammer.Tap({ event: 'singletap' });
 
     const carousel = document.querySelector(`.carousel-inner`);
