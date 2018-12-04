@@ -15,6 +15,9 @@ $('document').ready(() => {
 
     // Set event handlers.
     setEventHandlers();
+
+    localStorage.setItem('sound', 'audio1');
+    localStorage.setItem('theme', 'heat-map');
 });
 
 function setEventHandlers() {
